@@ -49,6 +49,9 @@ public class UserEntity {
     private Role role;
 
     @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private LocalDateTime created_at;
 
     @Column(nullable = false)
@@ -116,6 +119,14 @@ public class UserEntity {
 
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @PrePersist
