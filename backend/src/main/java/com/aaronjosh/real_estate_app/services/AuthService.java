@@ -8,7 +8,7 @@ import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
 @Service
-public class UserService {
+public class AuthService {
 
     @Autowired
     private UserRepository userRepository;

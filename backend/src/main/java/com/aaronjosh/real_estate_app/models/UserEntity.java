@@ -33,11 +33,11 @@ public class UserEntity {
 
     @NotBlank(message = "Firstname is required")
     @Column(nullable = false)
-    private String firstName;
+    private String firstname;
 
     @NotBlank(message = "Lastname is required")
     @Column(nullable = false)
-    private String lastName;
+    private String lastname;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Please provide a valid email address")
@@ -46,7 +46,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.RENTER;
 
     @Column(nullable = false)
     private String password;
@@ -63,8 +63,8 @@ public class UserEntity {
     }
 
     public UserEntity(String firstName, String lastName, String email, Role role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
         this.email = email;
         this.role = role;
     }
@@ -77,24 +77,24 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getFullName() {
-        return firstName + " " + lastName;
+    public String getFullname() {
+        return firstname + " " + lastname;
     }
 
     public Role getRole() {
