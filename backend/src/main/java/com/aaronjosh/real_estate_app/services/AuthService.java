@@ -1,6 +1,7 @@
 package com.aaronjosh.real_estate_app.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +32,14 @@ public class AuthService {
     }
 
     public UserEntity login(String email, String password) {
-        UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Invalid email or password."));
 
+        // checks if email exists
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password."));
+
+        // checks password if valid
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid email or password.");
+            throw new BadCredentialsException("Invalid email or password.");
         }
 
         return user;
