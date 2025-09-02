@@ -2,6 +2,8 @@ package com.aaronjosh.real_estate_app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 // handling the session validity
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 // only the unauthentication users to access login page
                 .authorizeHttpRequests(authorize -> authorize
@@ -37,12 +39,25 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
 
                 // exception handling with the bad credentials
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
-                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, authException) -> {
                     res.setContentType("application/json");
-                    res.getWriter().write("""
-                                {"error":"Unauthorized","message":"Authentication failed"}
-                            """);
+
+                    if (authException instanceof BadCredentialsException) {
+                        res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        res.getWriter().write("""
+                                    {"error":"Forbidden","message":"Invalid credentials"}
+                                """);
+                    } else if (authException instanceof InsufficientAuthenticationException) {
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.getWriter().write("""
+                                    {"error":"Unauthorized","message":"Authentication required"}
+                                """);
+                    } else {
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.getWriter().write("""
+                                    {"error":"Unauthorized","message":"Authentication failed"}
+                                """);
+                    }
                 }));
 
         return http.build();

@@ -5,6 +5,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.aaronjosh.real_estate_app.dto.RegisterDto;
+import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
+import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
@@ -17,21 +20,33 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserEntity register(UserEntity user) {
+    @Autowired
+    private JwtService jwtService;
+
+    public UserEntity register(RegisterDto user) {
 
         // checking if the email is already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        // hashing the password with the bcrypt
-        String newPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(newPassword);
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            throw new PasswordNotMatchException("Passwords do not match");
+        }
 
-        return userRepository.save(user);
+        // creating user entity
+        UserEntity newUser = new UserEntity();
+        newUser.setEmail(user.getEmail());
+        newUser.setFirstname(user.getFirstname());
+        newUser.setLastname(user.getLastname());
+
+        // hashing the password with bcrypt
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(newUser);
     }
 
-    public UserEntity login(String email, String password) {
+    public String login(String email, String password) {
 
         // checks if email exists
         UserEntity user = userRepository.findByEmail(email)
@@ -42,6 +57,6 @@ public class AuthService {
             throw new BadCredentialsException("Invalid email or password.");
         }
 
-        return user;
+        return jwtService.generateToken(user);
     }
 }
