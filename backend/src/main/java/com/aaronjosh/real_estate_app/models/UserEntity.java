@@ -1,6 +1,11 @@
 package com.aaronjosh.real_estate_app.models;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,6 +72,10 @@ public class UserEntity {
         this.lastname = lastName;
         this.email = email;
         this.role = role;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     public Long getId() {

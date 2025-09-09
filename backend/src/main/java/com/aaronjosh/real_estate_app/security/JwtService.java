@@ -1,4 +1,4 @@
-package com.aaronjosh.real_estate_app.services;
+package com.aaronjosh.real_estate_app.security;
 
 import java.util.Date;
 import java.util.function.Function;

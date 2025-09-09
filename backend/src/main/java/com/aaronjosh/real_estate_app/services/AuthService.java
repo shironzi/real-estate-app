@@ -10,6 +10,7 @@ import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
 import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
+import com.aaronjosh.real_estate_app.security.JwtService;
 
 @Service
 public class AuthService {

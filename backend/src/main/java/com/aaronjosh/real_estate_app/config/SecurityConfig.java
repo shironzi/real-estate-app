@@ -1,5 +1,6 @@
 package com.aaronjosh.real_estate_app.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,11 +10,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.aaronjosh.real_estate_app.security.JwtAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     // using bcrypt for the password hashing
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,6 +39,7 @@ public class SecurityConfig {
                 // only the unauthentication users to access login page
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").anonymous()
+                        .requestMatchers("/index").anonymous()
                         .anyRequest().authenticated())
 
                 // disable basic auth and default form login
@@ -58,7 +66,10 @@ public class SecurityConfig {
                                     {"error":"Unauthorized","message":"Authentication failed"}
                                 """);
                     }
-                }));
+                }))
+
+                // validates token
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
