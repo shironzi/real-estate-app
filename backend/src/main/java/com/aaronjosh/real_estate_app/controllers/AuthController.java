@@ -1,5 +1,7 @@
 package com.aaronjosh.real_estate_app.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto request) {
         try {
             String token = authService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok().body(Map.of("token", token));
         } catch (RuntimeException e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
