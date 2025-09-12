@@ -1,0 +1,54 @@
+.emailInput {
+    border: 1px solid #E0E0E0;
+    background-color: transparent;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: #E0E0E0;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.password_container {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #E0E0E0;
+    background-color: transparent;
+    margin-bottom: 10px;
+}
+
+.password_input {
+    background-color: transparent;
+    width: 80%;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    color: #E0E0E0;
+}
+
+.password_visibility {
+    background: "none";
+    border: "none";
+    color: "#666";
+    cursor: "pointer";
+    width: 20%;
+    background-color: transparent;
+    border: none;
+    margin: auto;
+}
