@@ -1,3 +1,7 @@
+/*
+ * Service layer for handling JWT token and validation.
+ */
+
 package com.aaronjosh.real_estate_app.security;
 
 import java.util.Date;
@@ -24,6 +28,11 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /*
+     * Generate Jwt Token for a user.
+     * - Includes claims: userId, email and role
+     * - Token expires in 24 hours
+     */
     public String generateToken(UserEntity user) {
         long currentTime = System.currentTimeMillis(); // current time
         long expiration = currentTime + (24 * 60 * 60 * 1000); // 24 hours
@@ -39,19 +48,31 @@ public class JwtService {
                 .compact();
     }
 
+    /*
+     * Extracts a specific claim from a JWT token.
+     */
     public <T> T extractClaim(String token, Function<Claims, T> claimFunction) {
         Claims claims = Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload();
         return claimFunction.apply(claims);
     }
 
+    /*
+     * Extract email from Jwt token.
+     */
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    /* Cheks if JWT token is expired. */
     public boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
+    /*
+     * Validate JWT token against a given user.
+     * - Token must be belong to email.
+     * - Token must not be expired.
+     */
     public boolean isTokenValid(String token, UserEntity user) {
         final String email = extractEmail(token);
         return (email.equals(user.getEmail()) && isTokenExpired(token));

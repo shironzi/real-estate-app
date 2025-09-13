@@ -1,3 +1,13 @@
+/**
+ * User Entity
+ * ---------------------------------
+ * Represents user in the system.
+ * 
+ * - Contains personal details (fname, lname, email)
+ * - Stores authentication data (Hashed password, role)
+ * - Automatically update the creation and date timestampt
+ */
+
 package com.aaronjosh.real_estate_app.models;
 
 import java.time.LocalDateTime;
@@ -24,7 +34,14 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "users")
 public class UserEntity {
 
-    // roles
+    /**
+     * User Role
+     * -----------------
+     * Define user role in the system.
+     * - ADMIN: Full access to the system
+     * - OWNER: Can list and manage own properties
+     * - RENTER: Can search and rent property
+     */
     public enum Role {
         ADMIN,
         OWNER,
@@ -62,9 +79,7 @@ public class UserEntity {
     @Column(nullable = false)
     private LocalDateTime updated_at;
 
-    // contructors
     public UserEntity() {
-        // Default constructor required for JPA
     }
 
     public UserEntity(String firstName, String lastName, String email, Role role) {
@@ -78,6 +93,7 @@ public class UserEntity {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
+    // fields, constractors and getters/setters
     public Long getId() {
         return id;
     }
@@ -138,6 +154,10 @@ public class UserEntity {
         this.password = password;
     }
 
+    /*
+     * Sets created_at and updated_at before persisting.
+     */
+
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -151,6 +171,9 @@ public class UserEntity {
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
     }
+    /*
+     * Sets update_at before updating.
+     */
 
     @PreUpdate
     protected void onUpdate() {

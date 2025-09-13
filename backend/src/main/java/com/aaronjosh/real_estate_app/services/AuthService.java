@@ -1,3 +1,7 @@
+/*
+ * Service layer responsible for handling user authentication and registration.
+ */
+
 package com.aaronjosh.real_estate_app.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,12 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
+    /*
+     * Registers a new user.
+     * - Validates email uniqueness.
+     * - Validates password confirmation.
+     * - Hashes password before saving.
+     */
     public UserEntity register(RegisterDto user) {
 
         // checking if the email is already exists
@@ -46,6 +56,10 @@ public class AuthService {
 
         return userRepository.save(newUser);
     }
+
+    /*
+     * Handles user Login and generate a JWT Token.
+     */
 
     public String login(String email, String password) {
 

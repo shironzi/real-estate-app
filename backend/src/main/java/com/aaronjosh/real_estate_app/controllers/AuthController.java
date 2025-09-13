@@ -1,3 +1,7 @@
+/*
+ * Rest controller responsible for handling authentication endpoints (Login & Register).
+ */
+
 package com.aaronjosh.real_estate_app.controllers;
 
 import java.util.Map;
@@ -24,6 +28,9 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    /*
+     * Handles login request and returns JWT if credentials are valid.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto request) {
         try {
@@ -33,6 +40,10 @@ public class AuthController {
             return ResponseEntity.status(403).body(e.getMessage());
         }
     }
+
+    /*
+     * Handle the registration request and create new user account.
+     */
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDto userDto) {
