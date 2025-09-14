@@ -4,11 +4,15 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import "../styles/auth.css";
 import "../styles/global.css";
 import { login } from "../utils/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -16,18 +20,27 @@ const Login = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await login(email, password);
+
+    try {
+      const data = await login(email, password);
+      navigate("/");
+    } catch (err: any) {
+      setError(err.message);
+      e.preventDefault();
+    }
   };
 
   return (
     <div>
+      <h1 className="title text-center">Login</h1>
+      {error.length && <h4 className="error">{error}</h4>}
       <form onSubmit={onSubmit}>
         <input
-          className="emailInput"
+          className="input"
           type="email"
           name="email"
           value={email}
-          onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+          onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
           placeholder="Email"
           required
         />
@@ -37,7 +50,7 @@ const Login = () => {
             name="passwordInput"
             type={showPassword ? "text" : "password"}
             value={password}
-            onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+            onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
             placeholder="Password"
             required
           />
@@ -54,7 +67,10 @@ const Login = () => {
           </button>
         </div>
 
-        <button>Login</button>
+        <Link to="/register" className="link">
+          <h4>Don't have an account?</h4>
+        </Link>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

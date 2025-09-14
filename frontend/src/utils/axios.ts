@@ -61,6 +61,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
+        const currentPage = window.location.pathname;
+
+        if (currentPage === "/login" || currentPage === "/register") {
+            return Promise.reject(error);
+        }
+
         if (error.response?.status === 401) {
             localStorage.removeItem("token");
             window.location.href = "/login";

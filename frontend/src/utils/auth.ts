@@ -12,12 +12,23 @@ import api from "./axios";
  */
 
 export async function login(email: string, password: string) {
-    const res = await api.post("/auth/login", { email, password });
+    try {
+        const res = await api.post("/auth/login", { email, password });
 
-    if (res.status === 200) {
         const data = res.data;
         localStorage.setItem("token", data.token);
+        return data;
+    } catch (err: any) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+            throw new Error(err.response.data.message || "Invalid email or password.");
+        } else {
+            throw new Error("Something went wrong. Please try again.");
+        }
     }
+}
+
+export async function register(firstname: string, lastname: string, email: string, password: string, confirmPassword: string) {
+    const res = await api.post("/auth/register", { firstname, lastname, email, password, confirmPassword });
 
     return res.status;
 }
