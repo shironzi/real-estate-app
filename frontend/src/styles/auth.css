@@ -79,12 +79,24 @@ form {
 
 .error {
     text-align: center;
-    border: #cc3300 2.5px solid;
+    border: #e65100 2.5px solid;
     border-radius: 10px;
-    background-color: #ff9966;
+    background-color: #ff9800;
     max-width: 25%;
     margin: 0 auto;
     padding: 20px 0;
     font-weight: 300;
     font-size: 14px;
+}
+
+.success {
+    background-color: #4caf50;
+    border: 2.5px solid #1b5e20;
+    border-radius: 10px;
+    max-width: 25%;
+    margin: 0 auto;
+    padding: 20px 0;
+    font-weight: 300;
+    font-size: 14px;
+    text-align: center;
 }

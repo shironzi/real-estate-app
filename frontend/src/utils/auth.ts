@@ -28,7 +28,15 @@ export async function login(email: string, password: string) {
 }
 
 export async function register(firstname: string, lastname: string, email: string, password: string, confirmPassword: string) {
-    const res = await api.post("/auth/register", { firstname, lastname, email, password, confirmPassword });
+    try {
+        const res = await api.post("/auth/register", { firstname, lastname, email, password, confirmPassword });
 
-    return res.status;
+        const data = res.data;
+        console.log(res.data);
+        return data;
+    } catch (err: any) {
+        const objects = err.response.data.messages;
+        const firstMessage = Object.values(objects)[0];
+        throw new Error(typeof firstMessage === "string" ? firstMessage : "Something went wrong.Please try again.");
+    }
 }
