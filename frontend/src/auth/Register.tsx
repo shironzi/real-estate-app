@@ -69,6 +69,15 @@ const Register = () => {
     }
   }, [countdown, isError, message, navigate]);
 
+  // Redirect to homepage, if logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div>
       <h1 className="title text-center">Register</h1>
@@ -160,7 +169,7 @@ const Register = () => {
           </button>
         </div>
 
-        <Link to="/login" className="link">
+        <Link to="/login" className="auth-redirect">
           <h4>Have an account?</h4>
         </Link>
 

@@ -36,6 +36,11 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token");
+        const currentPage = window.location.pathname;
+
+        if (token && (currentPage === "/login" || currentPage === "/register")) {
+            window.location.href = "/";
+        }
 
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;

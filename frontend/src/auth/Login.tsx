@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 import "../styles/auth.css";
@@ -29,6 +29,15 @@ const Login = () => {
       e.preventDefault();
     }
   };
+
+  // Redirect to homepage, if logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>
@@ -67,7 +76,7 @@ const Login = () => {
           </button>
         </div>
 
-        <Link to="/register" className="link">
+        <Link to="/register" className="auth-redirect">
           <h4>Don't have an account?</h4>
         </Link>
         <button type="submit">Login</button>

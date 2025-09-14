@@ -71,7 +71,7 @@ form {
     align-items: center;
 }
 
-.link {
+.auth-redirect {
     color: #fff;
     text-decoration: none;
     font-style: italic;
