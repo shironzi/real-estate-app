@@ -1,0 +1,31 @@
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 100px;
+    background-color: #fff;
+    align-items: center;
+}
+
+.link {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+.nav-mid{
+    width: 40%;
+    justify-content: space-around;
+    display: flex;
+}
+
+.nav-account {
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+    align-self: flex-end;
+}

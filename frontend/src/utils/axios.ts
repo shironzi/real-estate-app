@@ -36,6 +36,11 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token");
+        const currentPage = window.location.pathname;
+
+        if (token && (currentPage === "/login" || currentPage === "/register")) {
+            window.location.href = "/";
+        }
 
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -61,6 +66,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
+        const currentPage = window.location.pathname;
+
+        if (currentPage === "/login" || currentPage === "/register") {
+            return Promise.reject(error);
+        }
+
         if (error.response?.status === 401) {
             localStorage.removeItem("token");
             window.location.href = "/login";
