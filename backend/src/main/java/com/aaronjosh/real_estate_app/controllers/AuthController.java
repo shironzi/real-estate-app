@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +36,11 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto request) {
         try {
             String token = authService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok().body(Map.of("token", token));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(403).body(e.getMessage());
+            return ResponseEntity.ok(Map.of("token", token));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Server error"));
         }
     }
 

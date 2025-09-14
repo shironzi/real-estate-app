@@ -3,8 +3,7 @@ package com.aaronjosh.real_estate_app.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,8 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.aaronjosh.real_estate_app.security.JwtAuthenticationFilter;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
@@ -32,7 +29,7 @@ public class SecurityConfig {
         http
                 // removing csrf for rest api
                 .csrf(csrf -> csrf.disable())
-
+                .cors(Customizer.withDefaults())
                 // handling the session validity
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -47,26 +44,31 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
 
                 // exception handling with the bad credentials
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, authException) -> {
-                    res.setContentType("application/json");
+                // .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res,
+                // authException) -> {
+                // res.setContentType("application/json");
+                // res.setCharacterEncoding("UTF-8");
 
-                    if (authException instanceof BadCredentialsException) {
-                        res.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        res.getWriter().write("""
-                                    {"error":"Forbidden","message":"Invalid credentials"}
-                                """);
-                    } else if (authException instanceof InsufficientAuthenticationException) {
-                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        res.getWriter().write("""
-                                    {"error":"Unauthorized","message":"Authentication required"}
-                                """);
-                    } else {
-                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        res.getWriter().write("""
-                                    {"error":"Unauthorized","message":"Authentication failed"}
-                                """);
-                    }
-                }))
+                // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+                // res.setHeader("Access-Control-Allow-Credentials", "true");
+
+                // if (authException instanceof BadCredentialsException) {
+                // res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                // res.getWriter().write("""
+                // {"error":"Forbidden","message":"Invalid credentials"}
+                // """);
+                // } else if (authException instanceof InsufficientAuthenticationException) {
+                // res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                // res.getWriter().write("""
+                // {"error":"Unauthorized","message":"Authentication required"}
+                // """);
+                // } else {
+                // res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                // res.getWriter().write("""
+                // {"error":"Unauthorized","message":"Authentication failed"}
+                // """);
+                // }
+                // }))
 
                 // validates token
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
