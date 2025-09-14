@@ -22,18 +22,12 @@ const Navbar = () => {
       </div>
 
       <div className="nav-account">
-        <Link to={"./auth/Register.tsx"} className="link">
+        <Link to={"/register"} className="link">
           Become a host
         </Link>
-        <select name="" id="">
-          <option value=""></option>
-          <option value="">Help Center</option>
-          <option value="">Become a Host</option>
-          <option value="">Refer a Host</option>
-          <option value="">Find a Co-Host</option>
-          <option value="">Gift Cards</option>
-          <option value="">Log in or Sign up</option>
-        </select>
+        <Link to={"/register"} className="authentication link">
+          Login / Signup
+        </Link>
       </div>
     </nav>
   );
