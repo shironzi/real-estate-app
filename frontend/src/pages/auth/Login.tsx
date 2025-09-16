@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-import "../styles/auth.css";
-import "../styles/global.css";
-import { login } from "../utils/auth";
+import "@/styles/auth.css";
+import { login } from "@/utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
