@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.aaronjosh.real_estate_app.models.UserEntity;
+import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -61,6 +62,14 @@ public class JwtService {
      */
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
+
+    public Role extractRole(String token) {
+        return extractClaim(token, claims -> Role.valueOf(claims.get("role", String.class)));
     }
 
     /* Cheks if JWT token is expired. */

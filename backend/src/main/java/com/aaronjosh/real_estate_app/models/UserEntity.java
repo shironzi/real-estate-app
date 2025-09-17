@@ -73,11 +73,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime created_at = LocalDateTime.now();
 
-    @Column(nullable = false)
-    private LocalDateTime updated_at;
+    private LocalDateTime updated_at = LocalDateTime.now();
 
     public UserEntity() {
     }
