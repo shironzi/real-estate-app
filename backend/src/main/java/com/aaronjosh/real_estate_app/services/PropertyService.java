@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
@@ -13,6 +14,7 @@ import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 
 @Service
+@Transactional
 public class PropertyService {
 
     @Autowired
@@ -21,10 +23,12 @@ public class PropertyService {
     @Autowired
     private PropertyRepository propertyRepo;
 
+    @Transactional(readOnly = true)
     public List<PropertyEntity> getProperties() {
         return propertyRepo.findAll();
     }
 
+    @Transactional(readOnly = true)
     public PropertyEntity getPropertyById(Long propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
@@ -68,6 +72,7 @@ public class PropertyService {
         return propertyRepo.save(property);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProperty(Long propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));

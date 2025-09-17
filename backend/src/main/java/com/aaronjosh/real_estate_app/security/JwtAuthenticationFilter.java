@@ -3,6 +3,7 @@ package com.aaronjosh.real_estate_app.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userRepository = userRepository;
     }
 
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
+            @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         final String authHeader = req.getHeader("Authorization");
 
