@@ -39,6 +39,13 @@ public class PropertyService {
 
     public PropertyEntity addProperty(PropertyDto propertyDto) {
         Long userId = userService.getUserId();
+        Role userRole = userService.getRole();
+
+        if (userRole != Role.OWNER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only property owners are allowed to create a property.");
+        }
+
         PropertyEntity property = new PropertyEntity();
 
         property.setHostId(userId);
@@ -56,6 +63,13 @@ public class PropertyService {
     }
 
     public PropertyEntity editProperty(PropertyDto propertyDto, Long propertyId) {
+        Role userRole = userService.getRole();
+
+        if (userRole != Role.OWNER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only property owners are allowed to create a property.");
+        }
+
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
 
