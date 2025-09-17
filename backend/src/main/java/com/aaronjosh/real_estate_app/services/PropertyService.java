@@ -1,6 +1,7 @@
 package com.aaronjosh.real_estate_app.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class PropertyService {
     }
 
     @Transactional(readOnly = true)
-    public PropertyEntity getPropertyById(Long propertyId) {
+    public PropertyEntity getPropertyById(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
 
@@ -62,7 +63,7 @@ public class PropertyService {
         return propertyRepo.save(property);
     }
 
-    public PropertyEntity editProperty(PropertyDto propertyDto, Long propertyId) {
+    public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId) {
         Role userRole = userService.getRole();
 
         if (userRole != Role.OWNER) {
@@ -87,7 +88,7 @@ public class PropertyService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteProperty(Long propertyId) {
+    public void deleteProperty(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
 

@@ -2,6 +2,7 @@ package com.aaronjosh.real_estate_app.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProperty(@Valid @PathVariable Long propertyId) {
+    public ResponseEntity<?> getProperty(@Valid @PathVariable UUID propertyId) {
         PropertyEntity property = propertyService.getPropertyById(propertyId);
 
         return ResponseEntity.ok(Map.of("success", true, "property", property));
@@ -49,14 +50,14 @@ public class PropertyController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> editProperty(@PathVariable Long propertyId, @RequestBody PropertyDto propertyDto) {
+    public ResponseEntity<?> editProperty(@PathVariable UUID propertyId, @RequestBody PropertyDto propertyDto) {
         propertyService.editProperty(propertyDto, propertyId);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Property Updated Successfully"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProperty(@PathVariable Long propertyId) {
+    public ResponseEntity<?> deleteProperty(@PathVariable UUID propertyId) {
         propertyService.deleteProperty(propertyId);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Property Deleted Successfully"));
