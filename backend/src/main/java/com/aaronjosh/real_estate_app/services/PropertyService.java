@@ -58,7 +58,6 @@ public class PropertyService {
         property.setPrice(propertyDto.getPrice());
         property.setTotalBedroom(propertyDto.getTotalBedroom());
         property.setPropertyType(propertyDto.getPropertyType());
-        property.setAmenities(propertyDto.getAmenities());
 
         return propertyRepo.save(property);
     }
@@ -82,7 +81,6 @@ public class PropertyService {
         property.setPrice(propertyDto.getPrice());
         property.setTotalBedroom(propertyDto.getTotalBedroom());
         property.setPropertyType(propertyDto.getPropertyType());
-        property.setAmenities(propertyDto.getAmenities());
 
         return propertyRepo.save(property);
     }

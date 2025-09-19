@@ -33,7 +33,4 @@ public class PropertyDto {
 
     @NotBlank(message = "City is required")
     private String city;
-
-    @NotBlank(message = "Amenities is required")
-    private String amenities;
 }

@@ -2,6 +2,8 @@ package com.aaronjosh.real_estate_app.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -67,14 +69,14 @@ public class PropertyEntity {
     @NotBlank(message = "City is required")
     private String city;
 
-    @Column(columnDefinition = "TEXT")
-    private String amenities;
-
     @Enumerated(EnumType.STRING)
     private PropertyStatus status = PropertyStatus.ACTIVE;
 
     private LocalDateTime updatedAt = LocalDateTime.now();
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "PropertyImage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PropertyImage> images = new ArrayList<>();
 
     public PropertyEntity() {
     }
