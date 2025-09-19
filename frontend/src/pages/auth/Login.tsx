@@ -40,9 +40,9 @@ const Login = () => {
 
   return (
     <div>
-      <h1 className="title text-center">Login</h1>
+      <h1 className="text-center">Login</h1>
       {error.length && <h4 className="error">{error}</h4>}
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="auth-form">
         <input
           className="input"
           type="email"

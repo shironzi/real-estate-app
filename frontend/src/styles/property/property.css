@@ -24,7 +24,7 @@ p {
     background-color: transparent;
 }
 
-.container {
+.property-card-container {
     width: fit-content;
     height: fit-content;
 }

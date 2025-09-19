@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #1E1E1E;
   margin: 0;
@@ -7,13 +13,43 @@ body {
 
 h1 {
   font-size: 42px;
+}
+
+h1, h2, h3, h4, h5, h6 {
   color: #fff;
+}
+
+input {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 10px 20px;
 }
 
 input:focus {
   outline: none;
   box-shadow: none;
 }
+
+
+button {
+  background-color: #B08D57;
+  border: none;
+  border-radius: 2.5px;
+  max-width: 300px;
+  width: 100%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* button {
+    padding: 10px;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%; */
+/* } */
 
 /* Colors */
 .black {
@@ -29,7 +65,7 @@ input:focus {
 }
 
 .secondary{
-  color: #00A699;
+  color: #B08D57;
 }
 
 .background_white {
@@ -39,4 +75,9 @@ input:focus {
 /* text align */
 .text-center {
   text-align: center;
+}
+
+.container {
+  width: 85%;
+  margin: 0 auto;
 }

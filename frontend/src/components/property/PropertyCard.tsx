@@ -1,5 +1,5 @@
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import "@/styles/property.css";
+import "@/styles/property/property.css";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -31,7 +31,7 @@ const PropertyCard = ({
   });
 
   return (
-    <Link to={`/property/${id}`} className="container">
+    <Link to={`/property/${id}`} className="property-card-container">
       <img src={imageUrl} alt="propertyImage" />
       <button onClick={handleFavorite} className="favorite">
         {isFavorite ? <FaHeart size={25} /> : <FaRegHeart size={25} />}

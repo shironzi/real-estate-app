@@ -1,4 +1,10 @@
+import PropertyForm from "@/components/property/PropertyForm";
+
 const Property = () => {
-  return <div></div>;
+  return (
+    <div>
+      <PropertyForm />
+    </div>
+  );
 };
 export default Property;

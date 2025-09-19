@@ -1,0 +1,42 @@
+h3 {
+    color: #fff;
+}
+
+.property-form {
+    width: 100%;
+}
+
+.title-price-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.property-input-long {
+    width: 60%;
+}
+
+.property-price {
+    width: 35%;
+}
+
+.desc {
+  width: 100%;
+  min-height: 200px;
+  padding: 10px 15px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 16px;
+  resize: vertical;
+  vertical-align: top;
+}
+
+.property-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
