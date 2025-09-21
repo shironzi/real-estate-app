@@ -1,7 +1,6 @@
 import "@/styles/property/propertyForm.css";
-import { useState } from "react";
 import { handleNumeric } from "./PropertyFunc";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useProperty } from "@/context/PropertyContext";
 
 const PropertyForm = () => {

@@ -16,6 +16,7 @@ type PropertyData = {
   totalBedroom: number;
   city: string;
   propertyType: "APARTMENT" | "HOUSE" | "VILLA" | "CABIN";
+  images: File[];
 };
 
 type PropertyContextType = {
@@ -23,31 +24,25 @@ type PropertyContextType = {
   setData: Dispatch<SetStateAction<PropertyData>>;
 };
 
+const propertyData: PropertyData = {
+  title: "",
+  price: 0,
+  address: "",
+  description: "",
+  maxGuest: 1,
+  totalBedroom: 0,
+  city: "",
+  propertyType: "APARTMENT",
+  images: [],
+};
+
 export const PropertyContext = createContext<PropertyContextType>({
-  data: {
-    title: "",
-    price: 0,
-    address: "",
-    description: "",
-    maxGuest: 1,
-    totalBedroom: 0,
-    city: "",
-    propertyType: "APARTMENT",
-  },
+  data: propertyData,
   setData: () => {},
 });
 
 export const PropertyProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<PropertyData>({
-    title: "",
-    price: 0,
-    address: "",
-    description: "",
-    maxGuest: 1,
-    totalBedroom: 0,
-    city: "",
-    propertyType: "APARTMENT",
-  });
+  const [data, setData] = useState<PropertyData>(propertyData);
 
   return (
     <PropertyContext.Provider value={{ data, setData }}>

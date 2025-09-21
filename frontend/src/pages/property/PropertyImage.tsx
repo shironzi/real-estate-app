@@ -1,20 +1,25 @@
-import { useState } from "react";
 import { FaImage } from "react-icons/fa6";
 
 import "@/styles/property/propertyImage.css";
+import { useProperty } from "@/context/PropertyContext";
+import { ChangeEvent } from "react";
 
 const PropertyImages = () => {
-  const [images, setImages] = useState<File[]>([]);
+  const { data, setData } = useProperty();
 
-  const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setImages((prev) => [...prev, ...newFiles]);
+      const image = e.target.files[0];
+      setData((prev) => ({
+        ...prev,
+        images: [...prev.images, image],
+      }));
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
+    const newFiles = data.images.filter((_, i) => i !== index);
+    setData((prev) => ({ ...prev, images: newFiles }));
   };
 
   const handleEditImage = (
@@ -23,16 +28,18 @@ const PropertyImages = () => {
   ) => {
     if (e.target.files && e.target.files[0]) {
       const updatedFile = e.target.files[0];
-      setImages((prev) =>
-        prev.map((file, i) => (i === index ? updatedFile : file))
-      );
+      setData((prev) => {
+        const updatedImages = [...prev.images];
+        updatedImages[index] = updatedFile;
+        return { ...prev, images: updatedImages };
+      });
     }
   };
 
   return (
     <div className="property-image-container">
       <div className="image-grid">
-        {images.map((file, index) => (
+        {data.images.map((file, index) => (
           <div key={index} className="image-card">
             <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
             <div className="image-actions">
