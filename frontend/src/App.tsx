@@ -3,9 +3,10 @@ import Login from "./pages/auth/Login";
 import Home from "./pages/Home/Home";
 import Register from "./pages/auth/Register";
 import Navbar from "./Navbar";
-import Property from "./pages/property/Property";
 
 import "./styles/global.css";
+import PropertyForm from "./pages/property/PropertyForm";
+import PropertyImage from "./pages/property/PropertyImage";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/property/:id" element={<Property />} />
+          <Route path="/property/info" element={<PropertyForm />} />
+          <Route path="/property/images" element={<PropertyImage />} />
         </Routes>
       </div>
     </Router>
