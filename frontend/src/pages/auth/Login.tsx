@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-import "../styles/auth.css";
-import "../styles/global.css";
-import { login } from "../utils/auth";
+import "@/styles/auth.css";
+import { login } from "@/utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -41,9 +40,9 @@ const Login = () => {
 
   return (
     <div>
-      <h1 className="title text-center">Login</h1>
+      <h1 className="text-center">Login</h1>
       {error.length && <h4 className="error">{error}</h4>}
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="auth-form">
         <input
           className="input"
           type="email"

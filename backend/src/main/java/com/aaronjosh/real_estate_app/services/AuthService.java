@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aaronjosh.real_estate_app.dto.RegisterDto;
 import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
@@ -17,6 +18,7 @@ import com.aaronjosh.real_estate_app.repositories.UserRepository;
 import com.aaronjosh.real_estate_app.security.JwtService;
 
 @Service
+@Transactional
 public class AuthService {
 
     @Autowired
@@ -61,6 +63,7 @@ public class AuthService {
      * Handles user Login and generate a JWT Token.
      */
 
+    @Transactional(readOnly = true)
     public String login(String email, String password) {
 
         // checks if email exists

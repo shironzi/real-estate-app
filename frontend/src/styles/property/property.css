@@ -1,0 +1,30 @@
+img {
+    width: 250px;
+    object-fit: contain;
+    border-radius: 25px;
+}
+
+h4 {
+    color: #fff;
+    line-height: 0px;
+}
+
+p {
+    color: #c8c8c8;
+    line-height: 0px;
+    font-size: 14px;
+}
+
+.favorite {
+    position: absolute;
+    top: 1;
+    left: 0;
+    right: 100;
+    width: fit-content;
+    background-color: transparent;
+}
+
+.property-card-container {
+    width: fit-content;
+    height: fit-content;
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import "../styles/auth.css";
-import { register } from "../utils/auth";
+import "@/styles/auth.css";
+import { register } from "@/utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -80,7 +80,7 @@ const Register = () => {
 
   return (
     <div>
-      <h1 className="title text-center">Register</h1>
+      <h1 className="text-center">Register</h1>
 
       {message && (
         <h4 className={isError ? "error" : "success"}>
@@ -91,7 +91,7 @@ const Register = () => {
         </h4>
       )}
 
-      <form onSubmit={onSubmit} className="registration_container">
+      <form onSubmit={onSubmit} className="registration_container auth-form">
         <div className="name_container">
           <input
             type="text"

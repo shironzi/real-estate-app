@@ -47,10 +47,6 @@ public class SecurityConfig {
                 // .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res,
                 // authException) -> {
                 // res.setContentType("application/json");
-                // res.setCharacterEncoding("UTF-8");
-
-                // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-                // res.setHeader("Access-Control-Allow-Credentials", "true");
 
                 // if (authException instanceof BadCredentialsException) {
                 // res.setStatus(HttpServletResponse.SC_FORBIDDEN);
