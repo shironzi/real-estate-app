@@ -7,6 +7,8 @@ import Navbar from "./Navbar";
 import "./styles/global.css";
 import PropertyForm from "./pages/property/PropertyForm";
 import PropertyImage from "./pages/property/PropertyImage";
+import PropertyView from "./pages/property/PropertyView";
+import PropertyReview from "./pages/property/PropertyReview";
 
 function App() {
   return (
@@ -17,8 +19,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/property/info" element={<PropertyForm />} />
+
+          {/* Property Routes */}
+          <Route path="/property/form" element={<PropertyForm />} />
           <Route path="/property/images" element={<PropertyImage />} />
+          <Route path="/property/review" element={<PropertyReview />} />
+
+          <Route path="/property/:id" element={<PropertyView />} />
         </Routes>
       </div>
     </Router>

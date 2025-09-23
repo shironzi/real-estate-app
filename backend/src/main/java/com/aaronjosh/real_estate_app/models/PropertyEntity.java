@@ -62,6 +62,14 @@ public class PropertyEntity {
     private Integer totalBedroom;
 
     @Column(nullable = false)
+    @NotNull(message = "Total Bed is required")
+    private Integer totalBeds;
+
+    @Column(nullable = false)
+    @NotNull(message = "Total bath is required")
+    private Integer totalBaths;
+
+    @Column(nullable = false)
     @NotBlank(message = "Address is required")
     private String address;
 
@@ -76,7 +84,7 @@ public class PropertyEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "PropertyImage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PropertyImage> images = new ArrayList<>();
+    private List<FileEntity> images = new ArrayList<>();
 
     public PropertyEntity() {
     }

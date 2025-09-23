@@ -2,6 +2,8 @@ package com.aaronjosh.real_estate_app.dto;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.aaronjosh.real_estate_app.models.PropertyEntity.PropertyType;
 
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +33,15 @@ public class PropertyDto {
     @NotBlank(message = "Address is required")
     private String address;
 
+    @NotBlank(message = "Total Bed is required")
+    private Integer totalBeds;
+
+    @NotBlank(message = "Total bath is required")
+    private Integer totalBaths;
+
     @NotBlank(message = "City is required")
     private String city;
+
+    @NotBlank(message = "Image is required")
+    private MultipartFile images[];
 }

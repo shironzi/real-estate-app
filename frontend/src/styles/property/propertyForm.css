@@ -50,6 +50,7 @@
   width: 100%;
   text-decoration: none;
   margin: 100px 0;
+  column-gap: 20px;
 }
 
 .property-location-container {
