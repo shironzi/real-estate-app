@@ -2,10 +2,15 @@ import { FaImage } from "react-icons/fa6";
 
 import "@/styles/property/propertyImage.css";
 import { useProperty } from "@/context/PropertyContext";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PropertyImages = () => {
+  const navigate = useNavigate();
+
   const { data, setData } = useProperty();
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleAddImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -36,9 +41,26 @@ const PropertyImages = () => {
     }
   };
 
+  const handleNavigation = () => {
+    if (data.images.length < 1) {
+      setHasError(true);
+      setErrorMessage("Property Image is required");
+      return;
+    }
+
+    setHasError(false);
+    navigate("/property/review");
+  };
+
+  const handleBack = () => {
+    navigate("/property/form");
+  };
+
   return (
     <div className="property-image-container">
       <div className="image-grid">
+        {hasError && <h2>{errorMessage}</h2>}
+
         {data.images.map((file, index) => (
           <div key={index} className="image-card">
             <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
@@ -51,6 +73,7 @@ const PropertyImages = () => {
                   accept="image/*"
                   hidden
                   onChange={(e) => handleEditImage(e, index)}
+                  required
                 />
               </label>
             </div>
@@ -71,7 +94,10 @@ const PropertyImages = () => {
       </div>
 
       <div className="property-button-container">
-        <button>
+        <button onClick={handleBack} className="back-button">
+          <h3>Prev</h3>
+        </button>
+        <button onClick={handleNavigation}>
           <h3>Next</h3>
         </button>
       </div>

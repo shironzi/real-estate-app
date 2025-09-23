@@ -72,3 +72,8 @@ button {
   width: 85%;
   margin: 0 auto;
 }
+
+.back-button {
+  border: #B08D57 1px solid;
+  background-color: transparent;
+}

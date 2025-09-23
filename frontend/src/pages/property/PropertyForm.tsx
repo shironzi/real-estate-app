@@ -31,6 +31,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, title: e.target.value }))
             }
+            required
           />
           <input
             className="property-price"
@@ -40,6 +41,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, price: handleNumeric(e) }))
             }
+            required
           />
         </div>
       </div>
@@ -56,6 +58,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, address: e.target.value }))
             }
+            required
           />
           <input
             type="text"
@@ -64,6 +67,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, city: e.target.value }))
             }
+            required
           />
         </div>
       </div>
@@ -89,6 +93,7 @@ const PropertyForm = () => {
                   | "CABIN",
               }))
             }
+            required
           >
             <option value="APARTMENT">APARTMENT</option>
             <option value="HOUSE">HOUSE</option>
@@ -103,6 +108,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, title: e.target.value }))
             }
+            required
           />
           <input
             type="text"
@@ -112,6 +118,7 @@ const PropertyForm = () => {
             onChange={(e) =>
               setData((prev) => ({ ...prev, totalBedroom: handleNumeric(e) }))
             }
+            required
           />
         </div>
       </div>
@@ -123,6 +130,7 @@ const PropertyForm = () => {
           onChange={(e) =>
             setData((prev) => ({ ...prev, description: e.target.value }))
           }
+          required
         />
       </div>
 
