@@ -1,21 +1,46 @@
 import { useProperty } from "@/context/PropertyContext";
+import { createProperty } from "@/utils/property";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PropertyReview = () => {
   const navigate = useNavigate();
 
   const { data } = useProperty();
+  const [message, setMessage] = useState<string>();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const handleBack = () => {
     navigate("/property/images");
+  };
+
+  const handleCreate = async () => {
+    setIsFetching(true);
+    try {
+      const res = await createProperty(data);
+
+      setMessage(
+        res?.data?.message || res.message || "Successfully created a property."
+      );
+    } catch (e: any) {
+      setMessage(
+        e?.response?.data?.message || e.message || "Something went wrong"
+      );
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   return (
     <div>
       <h2>{data.title}</h2>
       <div>
-        {data.images.map((image) => (
-          <img src={URL.createObjectURL(image)} />
+        {data.images.map((image, index) => (
+          <img
+            src={URL.createObjectURL(image)}
+            key={index}
+            alt="property_image_preview"
+          />
         ))}
       </div>
 
@@ -38,11 +63,15 @@ const PropertyReview = () => {
       <p>{data.description}</p>
 
       <div className="property-button-container">
-        <button onClick={handleBack} className="back-button">
+        <button
+          onClick={handleBack}
+          className="back-button"
+          disabled={isFetching}
+        >
           <h3>Prev</h3>
         </button>
-        <button>
-          <h3>Create</h3>
+        <button onClick={handleCreate} disabled={isFetching}>
+          <h3>{isFetching ? "Creating...." : "Create"}</h3>
         </button>
       </div>
     </div>
