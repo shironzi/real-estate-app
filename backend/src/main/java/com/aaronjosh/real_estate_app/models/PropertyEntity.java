@@ -83,7 +83,7 @@ public class PropertyEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "PropertyImage", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "propertyEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> images = new ArrayList<>();
 
     public PropertyEntity() {
