@@ -9,11 +9,14 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.aaronjosh.real_estate_app.models.BlacklistedTokens;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity.Role;
+import com.aaronjosh.real_estate_app.repositories.BlacklistedTokensRepo;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +26,9 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
+
+    @Autowired
+    private BlacklistedTokensRepo blacklistedTokensRepo;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = jwtSecret.getBytes();
@@ -84,6 +90,15 @@ public class JwtService {
      */
     public boolean isTokenValid(String token, UserEntity user) {
         final String email = extractEmail(token);
+
         return (email.equals(user.getEmail()) && !isTokenExpired(token));
+    }
+
+    public void revokeToken(String token) {
+
+        BlacklistedTokens revokedToken = new BlacklistedTokens();
+        revokedToken.setToken(token);
+
+        blacklistedTokensRepo.save(revokedToken);
     }
 }
