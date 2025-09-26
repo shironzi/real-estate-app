@@ -19,9 +19,9 @@ const PropertyReview = () => {
     try {
       const res = await createProperty(data);
 
-      setMessage(
-        res?.data?.message || res.message || "Successfully created a property."
-      );
+      console.log(res);
+
+      setMessage(res?.message || "Successfully created a property.");
     } catch (e: any) {
       setMessage(
         e?.response?.data?.message || e.message || "Something went wrong"
