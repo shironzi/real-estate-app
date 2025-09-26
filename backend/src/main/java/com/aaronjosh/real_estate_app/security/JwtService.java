@@ -70,9 +70,17 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    /*
+     * Extracts user id from Jwt token.
+     */
+
     public Long extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", Long.class));
     }
+
+    /*
+     * Extracts role from Jwt token.
+     */
 
     public Role extractRole(String token) {
         return extractClaim(token, claims -> Role.valueOf(claims.get("role", String.class)));
@@ -94,11 +102,18 @@ public class JwtService {
         return (email.equals(user.getEmail()) && !isTokenExpired(token));
     }
 
+    /*
+     * blacklisting token on logout
+     */
     public void revokeToken(String token) {
 
         BlacklistedTokens revokedToken = new BlacklistedTokens();
         revokedToken.setToken(token);
 
         blacklistedTokensRepo.save(revokedToken);
+    }
+
+    public Boolean isBlacklisted(String token) {
+        return blacklistedTokensRepo.findByToken(token).isPresent();
     }
 }

@@ -30,6 +30,9 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private UserService userService;
+
     /*
      * Registers a new user.
      * - Validates email uniqueness.
@@ -78,10 +81,7 @@ public class AuthService {
         return jwtService.generateToken(user);
     }
 
-    public String Logout() {
-        
-
-
-        return "Successfully Logout.";
+    public void logout() {
+        jwtService.revokeToken(userService.getJwtToken());
     }
 }

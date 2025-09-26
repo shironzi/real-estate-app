@@ -33,8 +33,9 @@ public class SecurityConfig {
                 // handling the session validity
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // only the unauthentication users to access login page
+                // Setting the authorization on routes
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/auth/logout").authenticated()
                         .requestMatchers("/api/auth/**").anonymous()
                         .requestMatchers("/index").anonymous()
                         .anyRequest().authenticated())

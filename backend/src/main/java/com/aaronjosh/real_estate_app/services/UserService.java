@@ -13,7 +13,7 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
-    private String getJwtToken() {
+    public String getJwtToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String jwt = (String) authentication.getCredentials();

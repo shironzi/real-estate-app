@@ -42,6 +42,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         final String jwt = authHeader.substring(7);
+
+        if (jwtService.isBlacklisted(jwt)) {
+            filterChain.doFilter(req, res);
+            return;
+        }
+
         final String email = jwtService.extractEmail(jwt);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -49,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwtService.isTokenValid(jwt, userEntity)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userEntity, null, userEntity.getAuthorities());
+                        userEntity, jwt, userEntity.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

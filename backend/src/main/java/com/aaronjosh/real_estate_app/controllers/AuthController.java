@@ -60,4 +60,14 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        try {
+            authService.logout();
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully logout.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }
