@@ -11,6 +11,10 @@ body {
   box-sizing: border-box;
 }
 
+li {
+  text-decoration: none;
+}
+
 h1 {
   font-size: 42px;
 }

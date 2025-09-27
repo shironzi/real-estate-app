@@ -40,3 +40,14 @@ export async function register(firstname: string, lastname: string, email: strin
         throw new Error(typeof firstMessage === "string" ? firstMessage : "Something went wrong.Please try again.");
     }
 }
+
+export const logout = async () => {
+    try {
+
+        const res = await api.post("/auth/logout");
+
+        return res.status;
+    } catch (err: any) {
+        throw new Error(err.response.data.messages);
+    }
+}
