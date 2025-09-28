@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import "./styles/Navbar.css";
 import { useEffect, useState } from "react";
@@ -9,11 +9,14 @@ import Typography from "@mui/material/Typography";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
+
+  const currentPage = location.pathname;
 
   const handleCloseModal = () => {
     setShowModal(!showModal);
@@ -21,11 +24,12 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await logout();
+      await logout();
       localStorage.removeItem("token");
       setIsLoggedIn(false);
       navigate("/");
     } catch (err: any) {
+      setMessage(err.message);
       setShowModal(true);
     }
   };
@@ -33,7 +37,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) setIsLoggedIn(true);
-  }, []);
+  }, [currentPage]);
 
   return (
     <nav>

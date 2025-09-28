@@ -32,7 +32,6 @@ export async function register(firstname: string, lastname: string, email: strin
         const res = await api.post("/auth/register", { firstname, lastname, email, password, confirmPassword });
 
         const data = res.data;
-        console.log(res.data);
         return data;
     } catch (err: any) {
         const objects = err.response.data.messages;
@@ -46,7 +45,7 @@ export const logout = async () => {
 
         const res = await api.post("/auth/logout");
 
-        return res.status;
+        return res.data;
     } catch (err: any) {
         throw new Error(err.response.data.messages);
     }
