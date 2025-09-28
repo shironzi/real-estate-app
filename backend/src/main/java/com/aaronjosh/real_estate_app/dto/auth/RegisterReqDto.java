@@ -1,4 +1,4 @@
-package com.aaronjosh.real_estate_app.dto;
+package com.aaronjosh.real_estate_app.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class RegisterDto {
+public class RegisterReqDto {
 
     @NotBlank(message = "Firstname is required")
     private String firstname;

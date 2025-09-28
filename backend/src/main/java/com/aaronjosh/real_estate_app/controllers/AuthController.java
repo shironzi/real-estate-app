@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aaronjosh.real_estate_app.dto.LoginDto;
-import com.aaronjosh.real_estate_app.dto.RegisterDto;
+import com.aaronjosh.real_estate_app.dto.auth.LoginReqDto;
+import com.aaronjosh.real_estate_app.dto.auth.LoginResDto;
+import com.aaronjosh.real_estate_app.dto.auth.RegisterReqDto;
 import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
 import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
 import com.aaronjosh.real_estate_app.services.AuthService;
@@ -33,10 +34,10 @@ public class AuthController {
      * Handles login request and returns JWT if credentials are valid.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDto request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto request) {
         try {
-            String token = authService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(Map.of("token", token));
+            LoginResDto res = authService.login(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(res);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", e.getMessage()));
         } catch (Exception e) {
@@ -49,7 +50,7 @@ public class AuthController {
      */
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterDto userDto) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterReqDto userDto) {
         try {
             authService.register(userDto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created an account.");

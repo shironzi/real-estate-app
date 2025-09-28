@@ -20,26 +20,26 @@ const defaultData: UserContextTypes = {
 };
 
 type userData = {
-  data: UserContextTypes;
-  setData: Dispatch<SetStateAction<UserContextTypes>>;
+  userData: UserContextTypes;
+  setUserData: Dispatch<SetStateAction<UserContextTypes>>;
 };
 
 export const UserContext = createContext<userData>({
-  data: defaultData,
-  setData: () => {},
+  userData: defaultData,
+  setUserData: () => {},
 });
 
-export const PropertyProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<UserContextTypes>(defaultData);
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const [userData, setUserData] = useState<UserContextTypes>(defaultData);
 
   return (
-    <UserContext.Provider value={{ data, setData }}>
+    <UserContext.Provider value={{ userData, setUserData }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useProperty = () => {
+export const useUserData = () => {
   const ctx = useContext(UserContext);
   return ctx;
 };

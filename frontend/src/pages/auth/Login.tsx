@@ -4,10 +4,12 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import "@/styles/auth.css";
 import { login } from "@/utils/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserData } from "@/context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const { userData, setUserData } = useUserData();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +23,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const data = await login(email, password);
+      const res = await login(email, password);
+      setUserData({ name: res?.name, email: res?.email, role: res?.role });
+
       navigate("/");
     } catch (err: any) {
       setError(err.message);

@@ -6,11 +6,13 @@ import { logout } from "./utils/auth";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { UserContext, useUserData } from "./context/UserContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { userData } = useUserData();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -91,11 +93,30 @@ const Navbar = () => {
                     Profile
                   </Link>
                 </li>
-                <li>
-                  <Link to="/bookings" className="link">
-                    Bookings
-                  </Link>
-                </li>
+
+                {userData.role === "OWNER" && (
+                  <li>
+                    <Link to="/bookings" className="link">
+                      Manage Property
+                    </Link>
+                  </li>
+                )}
+
+                {userData.role === "OWNER" && (
+                  <li>
+                    <Link to="/bookings" className="link">
+                      Property Bookings
+                    </Link>
+                  </li>
+                )}
+
+                {userData.role === "RENTER" && (
+                  <li>
+                    <Link to="/bookings" className="link">
+                      My Bookings
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/settings" className="link">
                     Settings

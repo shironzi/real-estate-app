@@ -4,13 +4,16 @@
 
 package com.aaronjosh.real_estate_app.services;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aaronjosh.real_estate_app.dto.RegisterDto;
+import com.aaronjosh.real_estate_app.dto.auth.LoginResDto;
+import com.aaronjosh.real_estate_app.dto.auth.RegisterReqDto;
 import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
 import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
 import com.aaronjosh.real_estate_app.models.UserEntity;
@@ -39,7 +42,7 @@ public class AuthService {
      * - Validates password confirmation.
      * - Hashes password before saving.
      */
-    public UserEntity register(RegisterDto user) {
+    public UserEntity register(RegisterReqDto user) {
 
         // checking if the email is already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -67,7 +70,7 @@ public class AuthService {
      */
 
     @Transactional(readOnly = true)
-    public String login(String email, String password) {
+    public LoginResDto login(String email, String password) {
 
         // checks if email exists
         UserEntity user = userRepository.findByEmail(email)
@@ -78,7 +81,11 @@ public class AuthService {
             throw new BadCredentialsException("Invalid email or password.");
         }
 
-        return jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
+        String name = user.getFirstname() + " " + user.getLastname();
+
+        return new LoginResDto(jwtToken, name, user.getEmail(), user.getRole().name());
+
     }
 
     public void logout() {
