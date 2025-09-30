@@ -9,6 +9,7 @@ import PropertyForm from "./pages/property/PropertyForm";
 import PropertyImage from "./pages/property/PropertyImage";
 import PropertyView from "./pages/property/PropertyView";
 import PropertyReview from "./pages/property/PropertyReview";
+import ManageProperty from "./pages/property/ManageProperty";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/property/form" element={<PropertyForm />} />
           <Route path="/property/images" element={<PropertyImage />} />
           <Route path="/property/review" element={<PropertyReview />} />
-
+          <Route path="/property/manage" element={<ManageProperty />} />
           <Route path="/property/:id" element={<PropertyView />} />
         </Routes>
       </div>

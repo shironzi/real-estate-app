@@ -6,7 +6,7 @@ import { logout } from "./utils/auth";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { UserContext, useUserData } from "./context/UserContext";
+import { useUserData } from "./context/UserContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -76,10 +76,6 @@ const Navbar = () => {
       </div>
 
       <div className="nav-account" style={{}}>
-        <Link to={"/register"} className="link">
-          Become a host
-        </Link>
-
         {isLoggedIn ? (
           <div
             className="dropdown"
@@ -96,7 +92,7 @@ const Navbar = () => {
 
                 {userData.role === "OWNER" && (
                   <li>
-                    <Link to="/bookings" className="link">
+                    <Link to="/property/manage" className="link">
                       Manage Property
                     </Link>
                   </li>
@@ -104,7 +100,7 @@ const Navbar = () => {
 
                 {userData.role === "OWNER" && (
                   <li>
-                    <Link to="/bookings" className="link">
+                    <Link to="/property/booking" className="link">
                       Property Bookings
                     </Link>
                   </li>
