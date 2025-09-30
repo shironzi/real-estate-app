@@ -34,7 +34,7 @@ public class PropertyEntity {
 
     @Column(nullable = false)
     @NotNull(message = "Host ID is required")
-    private Long hostId;
+    private UUID hostId;
 
     @Column(nullable = false)
     @NotBlank(message = "Title is required")
@@ -89,7 +89,7 @@ public class PropertyEntity {
     public PropertyEntity() {
     }
 
-    public PropertyEntity(Long hostId, String title, String description, BigDecimal price,
+    public PropertyEntity(UUID hostId, String title, String description, BigDecimal price,
             PropertyType propertyType, Integer maxGuest, Integer totalBedroom,
             String address, String city) {
         this.hostId = hostId;

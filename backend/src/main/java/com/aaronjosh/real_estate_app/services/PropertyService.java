@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import com.aaronjosh.real_estate_app.dto.PropertyDto;
 import com.aaronjosh.real_estate_app.models.FileEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
+import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 
@@ -41,17 +42,16 @@ public class PropertyService {
     }
 
     public PropertyEntity addProperty(PropertyDto propertyDto) {
-        Long userId = userService.getUserId();
-        Role userRole = userService.getRole();
+        UserEntity user = userService.getUserEntity();
 
-        if (userRole != Role.OWNER) {
+        if (user.getRole() != Role.OWNER) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only property owners are allowed to create a property.");
         }
 
         PropertyEntity property = new PropertyEntity();
 
-        property.setHostId(userId);
+        property.setHostId(user.getId());
         property.setTitle(propertyDto.getTitle());
         property.setAddress(propertyDto.getAddress());
         property.setCity(propertyDto.getCity());
@@ -80,9 +80,9 @@ public class PropertyService {
     }
 
     public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId) {
-        Role userRole = userService.getRole();
+        UserEntity user = userService.getUserEntity();
 
-        if (userRole != Role.OWNER) {
+        if (user.getRole() != Role.OWNER) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only property owners are allowed to create a property.");
         }
@@ -107,11 +107,10 @@ public class PropertyService {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
 
-        Long hostId = property.getHostId();
-        Long userId = userService.getUserId();
-        Role userRole = userService.getRole();
+        UUID hostId = property.getHostId();
+        UserEntity user = userService.getUserEntity();
 
-        if (!hostId.equals(userId) && userRole != Role.ADMIN) {
+        if (!hostId.equals(user.getId()) && user.getRole() != Role.ADMIN) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have access to delete this property");
         }
 

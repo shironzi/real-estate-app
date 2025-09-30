@@ -4,8 +4,6 @@
 
 package com.aaronjosh.real_estate_app.services;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +18,8 @@ import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 import com.aaronjosh.real_estate_app.security.JwtService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 @Transactional
 public class AuthService {
@@ -32,9 +32,6 @@ public class AuthService {
 
     @Autowired
     private JwtService jwtService;
-
-    @Autowired
-    private UserService userService;
 
     /*
      * Registers a new user.
@@ -88,7 +85,12 @@ public class AuthService {
 
     }
 
-    public void logout() {
-        jwtService.revokeToken(userService.getJwtToken());
+    public void logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            jwtService.revokeToken(token);
+        }
     }
 }
