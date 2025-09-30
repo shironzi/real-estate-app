@@ -12,6 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,35 +36,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        final String authHeader = req.getHeader("Authorization");
+        try {
+            final String authHeader = req.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(req, res);
-            return;
-        }
-
-        final String jwt = authHeader.substring(7);
-
-        if (jwtService.isBlacklisted(jwt)) {
-            filterChain.doFilter(req, res);
-            return;
-        }
-
-        final String email = jwtService.extractEmail(jwt);
-
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
-
-            if (jwtService.isTokenValid(jwt, userEntity)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userEntity, jwt, userEntity.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                filterChain.doFilter(req, res);
+                return;
             }
 
-        }
+            final String jwt = authHeader.substring(7);
 
-        filterChain.doFilter(req, res);
+            if (jwtService.isBlacklisted(jwt)) {
+                filterChain.doFilter(req, res);
+                return;
+            }
+
+            final String email = jwtService.extractEmail(jwt);
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
+
+                if (jwtService.isTokenValid(jwt, userEntity)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userEntity, jwt, userEntity.getAuthorities());
+
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+
+            }
+
+            filterChain.doFilter(req, res);
+        } catch (ExpiredJwtException e) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setContentType("application/json");
+            res.getWriter().write("""
+                        {"error":"Unauthorized","message":"Token expired"}
+                    """);
+            return;
+        } catch (JwtException e) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setContentType("application/json");
+            res.getWriter().write("""
+                    "error": "Unauthorized","message":"Invalid token"
+                    """);
+        }
     }
 
 }
