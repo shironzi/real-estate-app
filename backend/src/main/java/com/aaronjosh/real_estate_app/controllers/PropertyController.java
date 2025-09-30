@@ -28,7 +28,7 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<?> getProperties() {
         List<PropertyEntity> properties = propertyService.getProperties();
 
@@ -42,7 +42,7 @@ public class PropertyController {
         return ResponseEntity.ok(Map.of("success", true, "property", property));
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<?> addProperty(@Valid @RequestBody PropertyDto propertyDto) {
         propertyService.addProperty(propertyDto);
 

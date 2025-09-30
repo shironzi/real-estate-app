@@ -31,6 +31,12 @@ const PropertyReview = () => {
     }
   };
 
+  const handleCreateProperty = async () => {
+    try {
+      const res = await createProperty(data);
+    } catch (err: any) {}
+  };
+
   return (
     <div>
       <h2>{data.title}</h2>

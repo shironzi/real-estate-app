@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import "./styles/Navbar.css";
 import { useEffect, useState } from "react";
-import { logout } from "./utils/auth";
+import { logout, verifyToken } from "./utils/auth";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -37,8 +37,16 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setIsLoggedIn(true);
+    const checkAuth = async () => {
+      try {
+        await verifyToken();
+        setIsLoggedIn(true);
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
   }, [currentPage]);
 
   return (

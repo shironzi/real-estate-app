@@ -12,7 +12,6 @@
  *
  *   // Example request
  *   const res = await api.get("/users");
- *   console.log(res.data);
  *
  * Environment:
  *   - Requires REACT_APP_BASE_URL in `.env`
@@ -74,7 +73,10 @@ api.interceptors.response.use(
 
         if (error.response?.status === 401) {
             localStorage.removeItem("token");
-            window.location.href = "/login";
+
+            if (currentPage !== "/") {
+                window.location.href = "/login";
+            };
         }
         return Promise.reject(error);
     }

@@ -1,4 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  redirect,
+  Navigate,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home/Home";
 import Register from "./pages/auth/Register";
@@ -11,6 +19,15 @@ import PropertyView from "./pages/property/PropertyView";
 import PropertyReview from "./pages/property/PropertyReview";
 import ManageProperty from "./pages/property/ManageProperty";
 
+const ProtectedRoutes = () => {
+  const token = localStorage.getItem("token");
+  console.log(token);
+
+  if (!token) return <Navigate to="/login" replace />;
+
+  return <Outlet />;
+};
+
 function App() {
   return (
     <Router>
@@ -22,11 +39,13 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Property Routes */}
-          <Route path="/property/form" element={<PropertyForm />} />
-          <Route path="/property/images" element={<PropertyImage />} />
-          <Route path="/property/review" element={<PropertyReview />} />
-          <Route path="/property/manage" element={<ManageProperty />} />
-          <Route path="/property/:id" element={<PropertyView />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/property/form" element={<PropertyForm />} />
+            <Route path="/property/images" element={<PropertyImage />} />
+            <Route path="/property/review" element={<PropertyReview />} />
+            <Route path="/property/manage" element={<ManageProperty />} />
+            <Route path="/property/:id" element={<PropertyView />} />
+          </Route>
         </Routes>
       </div>
     </Router>

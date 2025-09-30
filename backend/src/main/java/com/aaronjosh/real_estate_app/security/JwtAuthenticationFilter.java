@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,15 +41,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             final String authHeader = req.getHeader("Authorization");
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(req, res);
-                return;
+                throw new InsufficientAuthenticationException("Missing or invalid Authorization header");
             }
 
             final String jwt = authHeader.substring(7);
 
             if (jwtService.isBlacklisted(jwt)) {
-                filterChain.doFilter(req, res);
-                return;
+                throw new BadCredentialsException("Token is blacklisted");
             }
 
             final String email = jwtService.extractEmail(jwt);
@@ -66,19 +65,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(req, res);
-        } catch (ExpiredJwtException e) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            res.setContentType("application/json");
-            res.getWriter().write("""
-                        {"error":"Unauthorized","message":"Token expired"}
-                    """);
-            return;
         } catch (JwtException e) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            res.setContentType("application/json");
-            res.getWriter().write("""
-                    "error": "Unauthorized","message":"Invalid token"
-                    """);
+            throw new JwtException(e.getMessage());
         }
     }
 

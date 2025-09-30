@@ -49,3 +49,14 @@ export const logout = async () => {
         throw new Error(err.response.data.messages);
     }
 }
+
+export const verifyToken = async () => {
+    try {
+        const res = await api.post("/auth/verify");
+
+        return res.status;
+    } catch (err: any) {
+        localStorage.removeItem("token");
+        throw new Error(err.response.data.message);
+    }
+}
