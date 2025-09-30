@@ -42,7 +42,6 @@ export async function register(firstname: string, lastname: string, email: strin
 
 export const logout = async () => {
     try {
-
         const res = await api.post("/auth/logout");
 
         return res.data;

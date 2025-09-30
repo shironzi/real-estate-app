@@ -9,7 +9,7 @@ import { useUserData } from "@/context/UserContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const { userData, setUserData } = useUserData();
+  const { setUserData } = useUserData();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +40,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
