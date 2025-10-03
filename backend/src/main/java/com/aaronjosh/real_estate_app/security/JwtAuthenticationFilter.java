@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String path = req.getServletPath();
 
-            if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
+            if (path.startsWith("/api/auth/") && !path.equals("/api/auth/logout")) {
                 filterChain.doFilter(req, res);
                 return;
             }
