@@ -40,8 +40,8 @@ public class SecurityConfig {
                 // Setting the authorization on routes
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/logout").authenticated()
+                        .requestMatchers("/api/auth/verify").authenticated()
                         .requestMatchers("/api/auth/**").anonymous()
-                        .requestMatchers("/index").anonymous()
                         .anyRequest().authenticated())
 
                 // disable basic auth and default form login
@@ -62,6 +62,7 @@ public class SecurityConfig {
                         res.getWriter().write("""
                                 {"error":"Unauthorized","message":"%s"}
                                 """.formatted(authException.getMessage()));
+                        System.out.println(authException.getMessage());
                     } else {
                         res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         res.getWriter().write("""

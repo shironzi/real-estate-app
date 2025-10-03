@@ -27,12 +27,12 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      localStorage.removeItem("token");
       setIsLoggedIn(false);
       navigate("/");
     } catch (err: any) {
       setMessage(err.message);
       setShowModal(true);
+      setIsLoggedIn(false);
     }
   };
 
