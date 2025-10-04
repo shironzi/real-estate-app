@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -45,7 +46,7 @@ public class PropertyEntity {
     private String description;
 
     @Column(nullable = false)
-    @NotNull(message = "Price is required")
+    @Min(0)
     private BigDecimal price;
 
     @Column(nullable = false)
@@ -54,20 +55,20 @@ public class PropertyEntity {
     private PropertyType propertyType;
 
     @Column(nullable = false)
-    @NotNull(message = "Max guest is required")
+    @Min(1)
     private Integer maxGuest;
 
     @Column(nullable = false)
-    @NotNull(message = "Total bedroom is required")
+    @Min(0)
     private Integer totalBedroom;
 
     @Column(nullable = false)
-    @NotNull(message = "Total Bed is required")
-    private Integer totalBeds;
+    @Min(0)
+    private Integer totalBed;
 
     @Column(nullable = false)
-    @NotNull(message = "Total bath is required")
-    private Integer totalBaths;
+    @Min(0)
+    private Integer totalBath;
 
     @Column(nullable = false)
     @NotBlank(message = "Address is required")
@@ -89,9 +90,10 @@ public class PropertyEntity {
     public PropertyEntity() {
     }
 
-    public PropertyEntity(UUID hostId, String title, String description, BigDecimal price,
+    public PropertyEntity(UUID id, UUID hostId, String title, String description, BigDecimal price,
             PropertyType propertyType, Integer maxGuest, Integer totalBedroom,
-            String address, String city) {
+            Integer totalBed, Integer totalBath, String address, String city, List<FileEntity> images) {
+        this.id = id;
         this.hostId = hostId;
         this.title = title;
         this.description = description;
@@ -99,11 +101,13 @@ public class PropertyEntity {
         this.propertyType = propertyType;
         this.maxGuest = maxGuest;
         this.totalBedroom = totalBedroom;
+        this.totalBed = totalBed;
+        this.totalBath = totalBath;
         this.address = address;
         this.city = city;
+        this.images = images;
         this.status = PropertyStatus.ACTIVE;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-
 }

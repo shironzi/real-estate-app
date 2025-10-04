@@ -26,6 +26,7 @@ export const createProperty = async (info: PropertyTypes) => {
 
         return res.data;
     } catch (e: any) {
+        console.error(e)
         throw new Error("Something went wrong. Please try again.");
     }
 

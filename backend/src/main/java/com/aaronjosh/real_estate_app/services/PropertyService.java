@@ -53,13 +53,15 @@ public class PropertyService {
 
         property.setHostId(user.getId());
         property.setTitle(propertyDto.getTitle());
+        property.setDescription(propertyDto.getDescription());
+        property.setPrice(propertyDto.getPrice());
+        property.setPropertyType(propertyDto.getPropertyType());
+        property.setMaxGuest(propertyDto.getMaxGuest());
+        property.setTotalBedroom(propertyDto.getTotalBedroom());
+        property.setTotalBed(propertyDto.getTotalBed());
+        property.setTotalBath(propertyDto.getTotalBath());
         property.setAddress(propertyDto.getAddress());
         property.setCity(propertyDto.getCity());
-        property.setDescription(propertyDto.getDescription());
-        property.setMaxGuest(propertyDto.getMaxGuest());
-        property.setPrice(propertyDto.getPrice());
-        property.setTotalBedroom(propertyDto.getTotalBedroom());
-        property.setPropertyType(propertyDto.getPropertyType());
 
         for (MultipartFile image : propertyDto.getImages()) {
             try {

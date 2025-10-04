@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aaronjosh.real_estate_app.models.PropertyEntity.PropertyType;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,24 +25,24 @@ public class PropertyDto {
     @NotNull(message = "Property Type is required")
     private PropertyType propertyType;
 
-    @NotNull(message = "Max guest is required")
+    @Min(1)
     private Integer maxGuest;
 
-    @NotNull(message = "Total bedroom is required")
+    @Min(0)
     private Integer totalBedroom;
+
+    @Min(0)
+    private Integer totalBed;
+
+    @Min(0)
+    private Integer totalBath;
 
     @NotBlank(message = "Address is required")
     private String address;
 
-    @NotBlank(message = "Total Bed is required")
-    private Integer totalBeds;
-
-    @NotBlank(message = "Total bath is required")
-    private Integer totalBaths;
-
     @NotBlank(message = "City is required")
     private String city;
 
-    @NotBlank(message = "Image is required")
-    private MultipartFile images[];
+    @NotNull(message = "Images are required")
+    private MultipartFile[] images;
 }

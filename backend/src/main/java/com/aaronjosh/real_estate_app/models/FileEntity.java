@@ -30,7 +30,7 @@ public class FileEntity {
     private String type;
 
     @Lob
-    @Column(name = "data", nullable = false)
+    @Column(name = "data", nullable = false, columnDefinition = "LONGBLOB")
     private byte[] data;
 
     public FileEntity() {
@@ -43,7 +43,7 @@ public class FileEntity {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "property_id")
+    @JoinColumn(name = "property_id", nullable = false)
     private PropertyEntity propertyEntity;
 
 }
