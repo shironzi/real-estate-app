@@ -34,10 +34,6 @@ public class PropertyEntity {
     private UUID id;
 
     @Column(nullable = false)
-    @NotNull(message = "Host ID is required")
-    private UUID hostId;
-
-    @Column(nullable = false)
     @NotBlank(message = "Title is required")
     private String title;
 
@@ -87,14 +83,17 @@ public class PropertyEntity {
     @OneToMany(mappedBy = "propertyEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> images = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity host;
+
     public PropertyEntity() {
     }
 
-    public PropertyEntity(UUID id, UUID hostId, String title, String description, BigDecimal price,
+    public PropertyEntity(UUID id, String title, String description, BigDecimal price,
             PropertyType propertyType, Integer maxGuest, Integer totalBedroom,
             Integer totalBed, Integer totalBath, String address, String city, List<FileEntity> images) {
         this.id = id;
-        this.hostId = hostId;
         this.title = title;
         this.description = description;
         this.price = price;
