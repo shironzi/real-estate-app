@@ -1,6 +1,7 @@
 package com.aaronjosh.real_estate_app.security;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -34,13 +35,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userRepository = userRepository;
     }
 
+    private static final Set<String> PUBLIC_URLS = Set.of(
+            "/api/auth/register", "/api/auth/login", "/api/property/", "/api/property");
+
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String path = req.getServletPath();
 
-            if (path.equals("/api/auth/register") || path.equals("/api/auth/login")) {
+            if (PUBLIC_URLS.contains(path)) {
                 filterChain.doFilter(req, res);
                 return;
             }

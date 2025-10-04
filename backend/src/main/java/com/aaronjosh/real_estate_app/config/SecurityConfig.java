@@ -39,9 +39,9 @@ public class SecurityConfig {
 
                 // Setting the authorization on routes
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/logout").authenticated()
-                        .requestMatchers("/api/auth/verify").authenticated()
+                        .requestMatchers("/api/auth/verify", "/api/auth/logout").authenticated()
                         .requestMatchers("/api/auth/**").anonymous()
+                        .requestMatchers("/api/property", "/api/property/").permitAll()
                         .anyRequest().authenticated())
 
                 // disable basic auth and default form login
