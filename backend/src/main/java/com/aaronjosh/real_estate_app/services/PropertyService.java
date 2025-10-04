@@ -33,6 +33,13 @@ public class PropertyService {
     }
 
     @Transactional(readOnly = true)
+    public List<PropertyEntity> getMyPropeties() {
+        UserEntity user = userService.getUserEntity();
+
+        return propertyRepo.findByHostId(user.getId());
+    }
+
+    @Transactional(readOnly = true)
     public PropertyEntity getPropertyById(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
@@ -44,14 +51,16 @@ public class PropertyService {
     public PropertyEntity addProperty(PropertyDto propertyDto) {
         UserEntity user = userService.getUserEntity();
 
+        // checking the role
         if (user.getRole() != Role.OWNER) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Only property owners are allowed to create a property.");
         }
 
+        // creating new property object
         PropertyEntity property = new PropertyEntity();
 
-        property.setHostId(user.getId());
+        // setting property info
         property.setTitle(propertyDto.getTitle());
         property.setDescription(propertyDto.getDescription());
         property.setPrice(propertyDto.getPrice());
@@ -63,6 +72,10 @@ public class PropertyService {
         property.setAddress(propertyDto.getAddress());
         property.setCity(propertyDto.getCity());
 
+        // adding the relation of property to the user
+        property.setHost(user);
+
+        // adding the relation of images to property
         for (MultipartFile image : propertyDto.getImages()) {
             try {
                 FileEntity file = new FileEntity();
@@ -78,45 +91,50 @@ public class PropertyService {
             }
         }
 
+        // saving the property
         return propertyRepo.save(property);
     }
 
-    public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId) {
-        UserEntity user = userService.getUserEntity();
+    // public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId)
+    // {
+    // UserEntity user = userService.getUserEntity();
 
-        if (user.getRole() != Role.OWNER) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only property owners are allowed to create a property.");
-        }
+    // if (user.getRole() != Role.OWNER) {
+    // throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+    // "Only property owners are allowed to create a property.");
+    // }
 
-        PropertyEntity property = propertyRepo.findById(propertyId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
+    // PropertyEntity property = propertyRepo.findById(propertyId)
+    // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    // "Property not found"));
 
-        property.setTitle(propertyDto.getTitle());
-        property.setAddress(propertyDto.getAddress());
-        property.setCity(propertyDto.getCity());
-        property.setDescription(propertyDto.getDescription());
-        property.setMaxGuest(propertyDto.getMaxGuest());
-        property.setPrice(propertyDto.getPrice());
-        property.setTotalBedroom(propertyDto.getTotalBedroom());
-        property.setPropertyType(propertyDto.getPropertyType());
+    // property.setTitle(propertyDto.getTitle());
+    // property.setAddress(propertyDto.getAddress());
+    // property.setCity(propertyDto.getCity());
+    // property.setDescription(propertyDto.getDescription());
+    // property.setMaxGuest(propertyDto.getMaxGuest());
+    // property.setPrice(propertyDto.getPrice());
+    // property.setTotalBedroom(propertyDto.getTotalBedroom());
+    // property.setPropertyType(propertyDto.getPropertyType());
 
-        return propertyRepo.save(property);
-    }
+    // return propertyRepo.save(property);
+    // }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteProperty(UUID propertyId) {
-        PropertyEntity property = propertyRepo.findById(propertyId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
+    // @Transactional(rollbackFor = Exception.class)
+    // public void deleteProperty(UUID propertyId) {
+    // PropertyEntity property = propertyRepo.findById(propertyId)
+    // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    // "Property not found"));
 
-        UUID hostId = property.getHostId();
-        UserEntity user = userService.getUserEntity();
+    // UUID hostId = property.getHostId();
+    // UserEntity user = userService.getUserEntity();
 
-        if (!hostId.equals(user.getId()) && user.getRole() != Role.ADMIN) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have access to delete this property");
-        }
+    // if (!hostId.equals(user.getId()) && user.getRole() != Role.ADMIN) {
+    // throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have
+    // access to delete this property");
+    // }
 
-        propertyRepo.delete(property);
-    }
+    // propertyRepo.delete(property);
+    // }
 
 }
