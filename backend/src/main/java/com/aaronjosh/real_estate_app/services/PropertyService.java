@@ -60,39 +60,42 @@ public class PropertyService {
         // creating new property object
         PropertyEntity property = new PropertyEntity();
 
-        // setting property info
-        property.setTitle(propertyDto.getTitle());
-        property.setDescription(propertyDto.getDescription());
-        property.setPrice(propertyDto.getPrice());
-        property.setPropertyType(propertyDto.getPropertyType());
-        property.setMaxGuest(propertyDto.getMaxGuest());
-        property.setTotalBedroom(propertyDto.getTotalBedroom());
-        property.setTotalBed(propertyDto.getTotalBed());
-        property.setTotalBath(propertyDto.getTotalBath());
-        property.setAddress(propertyDto.getAddress());
-        property.setCity(propertyDto.getCity());
+        return property;
 
-        // adding the relation of property to the user
-        property.setHost(user);
+        // // setting property info
+        // property.setTitle(propertyDto.getTitle());
+        // property.setDescription(propertyDto.getDescription());
+        // property.setPrice(propertyDto.getPrice());
+        // property.setPropertyType(propertyDto.getPropertyType());
+        // property.setMaxGuest(propertyDto.getMaxGuest());
+        // property.setTotalBedroom(propertyDto.getTotalBedroom());
+        // property.setTotalBed(propertyDto.getTotalBed());
+        // property.setTotalBath(propertyDto.getTotalBath());
+        // property.setAddress(propertyDto.getAddress());
+        // property.setCity(propertyDto.getCity());
 
-        // adding the relation of images to property
-        for (MultipartFile image : propertyDto.getImages()) {
-            try {
-                FileEntity file = new FileEntity();
+        // // adding the relation of property to the user
+        // property.setHost(user);
 
-                file.setName(image.getOriginalFilename());
-                file.setType(image.getContentType());
-                file.setData(image.getBytes());
+        // // adding the relation of images to property
+        // for (MultipartFile image : propertyDto.getImages()) {
+        // try {
+        // FileEntity file = new FileEntity();
 
-                file.setPropertyEntity(property);
-                property.getImages().add(file);
-            } catch (java.io.IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process image file", e);
-            }
-        }
+        // file.setName(image.getOriginalFilename());
+        // file.setType(image.getContentType());
+        // file.setData(image.getBytes());
 
-        // saving the property
-        return propertyRepo.save(property);
+        // file.setPropertyEntity(property);
+        // property.getImages().add(file);
+        // } catch (java.io.IOException e) {
+        // throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed
+        // to process image file", e);
+        // }
+        // }
+
+        // // saving the property
+        // return propertyRepo.save(property);
     }
 
     // public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId)
