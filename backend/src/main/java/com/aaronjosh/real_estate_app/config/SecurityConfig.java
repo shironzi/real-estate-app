@@ -3,6 +3,7 @@ package com.aaronjosh.real_estate_app.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.Customizer;
@@ -41,7 +42,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/verify", "/api/auth/logout").authenticated()
                         .requestMatchers("/api/auth/**").anonymous()
-                        .requestMatchers("/api/property", "/api/property/").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/property").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/api/property", "/api/property/").permitAll()
                         .anyRequest().authenticated())
 
                 // disable basic auth and default form login

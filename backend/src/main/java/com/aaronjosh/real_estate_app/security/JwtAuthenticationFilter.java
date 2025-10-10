@@ -1,7 +1,6 @@
 package com.aaronjosh.real_estate_app.security;
 
 import java.io.IOException;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -35,21 +34,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userRepository = userRepository;
     }
 
-    private static final Set<String> PUBLIC_URLS = Set.of(
-            "/api/auth/register", "/api/auth/login", "/api/property/", "/api/property");
-
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String path = req.getServletPath();
+            String method = req.getMethod();
 
-            if (PUBLIC_URLS.contains(path)) {
+            System.out.println(path);
+
+            if (path.equals("/api/property/") && method.equalsIgnoreCase("GET")) {
+                filterChain.doFilter(req, res);
+                return;
+            }
+
+            if (path.equals("/api/auth/register") || path.equals("/api/auth/login")) {
                 filterChain.doFilter(req, res);
                 return;
             }
 
             final String authHeader = req.getHeader("Authorization");
+
+            System.out.println(authHeader);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 throw new InsufficientAuthenticationException("Missing or invalid Authorization header");
@@ -63,10 +69,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             final String email = jwtService.extractEmail(jwt);
 
+            System.out.println(email);
+
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
+                UserEntity userEntity = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new BadCredentialsException(email));
 
                 if (jwtService.isTokenValid(jwt, userEntity)) {
+                    System.out.println("Working here");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userEntity, jwt, userEntity.getAuthorities());
 
