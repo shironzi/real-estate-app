@@ -33,10 +33,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "users")
+@ToString(exclude = "properties")
 public class UserEntity {
 
     /**

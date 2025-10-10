@@ -14,7 +14,6 @@ import com.aaronjosh.real_estate_app.dto.PropertyDto;
 import com.aaronjosh.real_estate_app.models.FileEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity;
-import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 
 @Service
@@ -51,51 +50,42 @@ public class PropertyService {
     public PropertyEntity addProperty(PropertyDto propertyDto) {
         UserEntity user = userService.getUserEntity();
 
-        // checking the role
-        if (user.getRole() != Role.OWNER) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only property owners are allowed to create a property.");
-        }
-
         // creating new property object
         PropertyEntity property = new PropertyEntity();
 
-        return property;
+        // setting property info
+        property.setTitle(propertyDto.getTitle());
+        property.setDescription(propertyDto.getDescription());
+        property.setPrice(propertyDto.getPrice());
+        property.setPropertyType(propertyDto.getPropertyType());
+        property.setMaxGuest(propertyDto.getMaxGuest());
+        property.setTotalBedroom(propertyDto.getTotalBedroom());
+        property.setTotalBed(propertyDto.getTotalBed());
+        property.setTotalBath(propertyDto.getTotalBath());
+        property.setAddress(propertyDto.getAddress());
+        property.setCity(propertyDto.getCity());
 
-        // // setting property info
-        // property.setTitle(propertyDto.getTitle());
-        // property.setDescription(propertyDto.getDescription());
-        // property.setPrice(propertyDto.getPrice());
-        // property.setPropertyType(propertyDto.getPropertyType());
-        // property.setMaxGuest(propertyDto.getMaxGuest());
-        // property.setTotalBedroom(propertyDto.getTotalBedroom());
-        // property.setTotalBed(propertyDto.getTotalBed());
-        // property.setTotalBath(propertyDto.getTotalBath());
-        // property.setAddress(propertyDto.getAddress());
-        // property.setCity(propertyDto.getCity());
+        // adding the relation of property to the user
+        property.setHost(user);
 
-        // // adding the relation of property to the user
-        // property.setHost(user);
+        // adding the relation of images to property
+        for (MultipartFile image : propertyDto.getImages()) {
+            try {
+                FileEntity file = new FileEntity();
 
-        // // adding the relation of images to property
-        // for (MultipartFile image : propertyDto.getImages()) {
-        // try {
-        // FileEntity file = new FileEntity();
+                file.setName(image.getOriginalFilename());
+                file.setType(image.getContentType());
+                file.setData(image.getBytes());
 
-        // file.setName(image.getOriginalFilename());
-        // file.setType(image.getContentType());
-        // file.setData(image.getBytes());
+                file.setPropertyEntity(property);
+                property.getImages().add(file);
+            } catch (java.io.IOException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process image file", e);
+            }
+        }
 
-        // file.setPropertyEntity(property);
-        // property.getImages().add(file);
-        // } catch (java.io.IOException e) {
-        // throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed
-        // to process image file", e);
-        // }
-        // }
-
-        // // saving the property
-        // return propertyRepo.save(property);
+        // saving the property
+        return propertyRepo.save(property);
     }
 
     // public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId)

@@ -20,7 +20,10 @@ import com.aaronjosh.real_estate_app.dto.auth.LoginResDto;
 import com.aaronjosh.real_estate_app.dto.auth.RegisterReqDto;
 import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
 import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
+import com.aaronjosh.real_estate_app.models.UserEntity;
+import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 import com.aaronjosh.real_estate_app.services.AuthService;
+import com.aaronjosh.real_estate_app.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -30,6 +33,9 @@ import jakarta.validation.Valid;
 public class AuthController {
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     /*
      * Handles login request and returns JWT if credentials are valid.
@@ -75,7 +81,11 @@ public class AuthController {
     @PostMapping("/verify")
     public ResponseEntity<?> verifyAuth() {
         try {
-            return ResponseEntity.ok().body("Token is valid.");
+            UserEntity user = userService.getUserEntity();
+
+            Role role = user.getRole();
+
+            return ResponseEntity.ok().body(Map.of("success", true, "message", "Token is valid", "role", role));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
