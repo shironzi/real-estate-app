@@ -54,6 +54,8 @@ export const verifyToken = async () => {
     try {
         const res = await api.post("/auth/verify");
 
+        console.log(res)
+
         return res.status;
     } catch (err: any) {
         localStorage.removeItem("token");

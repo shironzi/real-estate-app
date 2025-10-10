@@ -19,12 +19,16 @@ const PropertyReview = () => {
     try {
       const res = await createProperty(data);
 
+      console.log(res.status);
+
       setMessage(res?.message || "Successfully created a property.");
       navigate("/property/manage");
     } catch (e: any) {
       setMessage(
         e?.response?.data?.message || e.message || "Something went wrong"
       );
+
+      console.log(e?.response?.status);
 
       console.error(e);
     } finally {
