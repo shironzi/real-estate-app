@@ -33,8 +33,7 @@ export async function register(firstname: string, lastname: string, email: strin
     try {
         const res = await api.post("/auth/register", { firstname, lastname, email, password, confirmPassword });
 
-        const data = res.data;
-        return data;
+        return res;
     } catch (err: any) {
         const objects = err.response.data.messages;
         const firstMessage = Object.values(objects)[0];
@@ -47,7 +46,7 @@ export const logout = async () => {
         const res = await api.post("/auth/logout");
         localStorage.removeItem("token");
 
-        return res.data;
+        return res;
     } catch (err: any) {
         throw new Error(err.response.data.messages);
     }
@@ -57,9 +56,7 @@ export const verifyToken = async (setUserData: (data: any) => void) => {
     try {
         const res = await api.post("/auth/verify");
 
-        const data = await res.data;
-
-        setUserData({ name: data.name, email: data.name, role: data.role, isAuthenticated: true })
+        setUserData({ name: res.data.name, email: res.data.email, role: res.data.role, isAuthenticated: true })
 
         return res.status;
     } catch (err: any) {

@@ -46,7 +46,7 @@ const Register = () => {
       );
 
       setIsError(false);
-      setMessage(res);
+      setMessage(res?.data?.message ?? "Registration successful");
 
       // Start countdown (5 seconds)
       setCountdown(5);

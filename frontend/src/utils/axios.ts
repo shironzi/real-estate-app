@@ -65,18 +65,18 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-        const currentPage = window.location.pathname;
 
-        if (currentPage === "/login" || currentPage === "/register") {
-            return Promise.reject(error);
-        }
-
-        if (error.response?.status === 401) {
-            localStorage.removeItem("token");
+        if (!error.response) {
+            console.error("🌐 No internet connection or server not reachable.");
+        } else if (error.response?.status === 401) {
+            const currentPage = window.location.pathname;
 
             if (currentPage !== "/") {
+                localStorage.removeItem("token");
                 window.location.href = "/login";
             };
+        } else if (error.response?.status >= 500) {
+            console.error("💥 Server error — try again later.");
         }
         return Promise.reject(error);
     }

@@ -43,7 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/verify", "/api/auth/logout").authenticated()
                         .requestMatchers("/api/auth/**").anonymous()
                         .requestMatchers(HttpMethod.POST, "/api/property").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.GET, "/api/property", "/api/property/").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/property/my-properties").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/api/property/").permitAll()
                         .anyRequest().authenticated())
 
                 // disable basic auth and default form login

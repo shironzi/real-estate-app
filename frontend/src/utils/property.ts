@@ -31,3 +31,14 @@ export const createProperty = async (info: PropertyTypes) => {
     }
 
 }
+
+export const getMyProperties = async () => {
+    try {
+        const res = await api.get("/property/my-properties")
+
+        return await res.data;
+    } catch (e: any) {
+        console.error(e)
+        throw new Error("Something went wrong. Please try again.")
+    }
+}

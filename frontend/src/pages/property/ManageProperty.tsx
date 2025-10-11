@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import "@/styles/property/manageProperty.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMyProperties } from "@/utils/property";
 
 type Property = {
   id: number;
@@ -14,32 +15,33 @@ type Property = {
 };
 
 const ManageProperty = () => {
-  const [properties, setProperties] = useState<Property[]>([
-    {
-      id: 1,
-      title: "Modern Apartment",
-      location: "Manila",
-      price: 25000,
-      status: "Available",
-      type: "Apartment",
-      image:
-        "https://prod.rockmedialibrary.com/api/public/content/ff061825fa8e44bf8108de5c786c0062?v=4c4f7c7a",
-    },
-    {
-      id: 2,
-      title: "Beach House",
-      location: "Cebu",
-      price: 120000,
-      status: "Occupied",
-      type: "House",
-      image:
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
-    },
-  ]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleDelete = (id: number) => {
     setProperties((prev) => prev.filter((p) => p.id !== id));
   };
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const res = await getMyProperties();
+
+      if (res.success) {
+        setProperties(res?.properties);
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading.........</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="manage-property">
