@@ -81,7 +81,14 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(user);
         String name = user.getFirstname() + " " + user.getLastname();
 
-        return new LoginResDto(jwtToken, name, user.getEmail(), user.getRole().name());
+        LoginResDto loginData = new LoginResDto();
+
+        loginData.setName(name);
+        loginData.setEmail(user.getEmail());
+        loginData.setRole(user.getRole());
+        loginData.setToken(jwtToken);
+
+        return loginData;
 
     }
 

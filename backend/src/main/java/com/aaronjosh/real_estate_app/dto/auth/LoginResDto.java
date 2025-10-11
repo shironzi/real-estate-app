@@ -1,5 +1,7 @@
 package com.aaronjosh.real_estate_app.dto.auth;
 
+import com.aaronjosh.real_estate_app.models.UserEntity.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,7 +11,7 @@ public class LoginResDto {
     private String token;
     private String name;
     private String email;
-    private String role;
+    private Role role;
 
     public LoginResDto() {
 

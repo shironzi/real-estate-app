@@ -17,8 +17,6 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
 
-  const currentPath = location.pathname;
-
   const handleCloseModal = () => {
     setShowModal(!showModal);
   };
