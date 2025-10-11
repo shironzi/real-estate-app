@@ -75,6 +75,7 @@ const Register = () => {
 
     if (token) {
       navigate("/");
+      console.log(token);
     }
   }, []);
 

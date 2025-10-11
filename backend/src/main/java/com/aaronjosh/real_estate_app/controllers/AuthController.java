@@ -44,7 +44,9 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto request) {
         try {
             LoginResDto res = authService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(res);
+            return ResponseEntity
+                    .ok(Map.of("success", true, "message", "Login Successful", "token", res.getToken(), "name",
+                            res.getName(), "email", res.getEmail(), "role", res.getEmail()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", e.getMessage()));
         } catch (Exception e) {

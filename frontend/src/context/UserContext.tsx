@@ -11,12 +11,14 @@ type UserContextTypes = {
   name: string;
   email: string;
   role: string;
+  isAuthenticated: boolean;
 };
 
 const defaultData: UserContextTypes = {
   name: "",
   email: "",
   role: "RENTER",
+  isAuthenticated: false,
 };
 
 type userData = {

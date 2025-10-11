@@ -12,13 +12,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { userData } = useUserData();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const { userData, setUserData } = useUserData();
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
 
-  const currentPage = location.pathname;
+  const currentPath = location.pathname;
 
   const handleCloseModal = () => {
     setShowModal(!showModal);
@@ -27,27 +26,22 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      setIsLoggedIn(false);
+      setUserData({ name: "", email: "", role: "", isAuthenticated: false });
+
       navigate("/");
     } catch (err: any) {
       setMessage(err.message);
       setShowModal(true);
-      setIsLoggedIn(false);
     }
   };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await verifyToken();
-        setIsLoggedIn(true);
-      } catch (err) {
-        setIsLoggedIn(false);
-      }
-    };
+    const token = localStorage.getItem("token");
 
-    checkAuth();
-  }, [currentPage]);
+    if (!userData.isAuthenticated && token) {
+      verifyToken(setUserData);
+    }
+  }, []);
 
   return (
     <nav>
@@ -83,8 +77,8 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="nav-account" style={{}}>
-        {isLoggedIn ? (
+      <div className="nav-account">
+        {userData.isAuthenticated ? (
           <div
             className="dropdown"
             onClick={() => setIsDropdownOpen((prev) => !prev)}

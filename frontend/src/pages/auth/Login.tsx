@@ -24,7 +24,12 @@ const Login = () => {
 
     try {
       const res = await login(email, password);
-      setUserData({ name: res?.name, email: res?.email, role: res?.role });
+      setUserData({
+        name: res?.name,
+        email: res?.email,
+        role: res?.role,
+        isAuthenticated: true,
+      });
 
       navigate("/");
     } catch (err: any) {

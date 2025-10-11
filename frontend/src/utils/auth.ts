@@ -1,3 +1,4 @@
+import { useUserData } from "@/context/UserContext";
 import api from "./axios";
 
 /**
@@ -17,6 +18,7 @@ export async function login(email: string, password: string) {
 
         const data = res.data;
         localStorage.setItem("token", data.token);
+
         return data;
     } catch (err: any) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
@@ -50,11 +52,13 @@ export const logout = async () => {
     }
 }
 
-export const verifyToken = async () => {
+export const verifyToken = async (setUserData: (data: any) => void) => {
     try {
         const res = await api.post("/auth/verify");
 
-        console.log(res)
+        const data = await res.data;
+
+        setUserData({ name: data.name, email: data.name, role: data.role, isAuthenticated: true })
 
         return res.status;
     } catch (err: any) {
