@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if (path.startsWith("/api/image/")) {
+            if (path.startsWith("/api/image/") && method.equalsIgnoreCase("GET")) {
                 filterChain.doFilter(req, res);
                 return;
             }
