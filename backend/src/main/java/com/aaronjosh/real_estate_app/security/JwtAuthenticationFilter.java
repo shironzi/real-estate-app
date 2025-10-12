@@ -1,8 +1,6 @@
 package com.aaronjosh.real_estate_app.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -11,6 +9,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.aaronjosh.real_estate_app.models.UserEntity;
@@ -26,17 +25,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private final JwtService jwtService;
+    private JwtService jwtService;
 
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
-        this.jwtService = jwtService;
-        this.userRepository = userRepository;
-    }
-
-    protected List<String> publicUrls = new ArrayList<>(List.of("/api/property/", "/api/image/"));
+    AntPathMatcher matcher = new AntPathMatcher();
 
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
@@ -45,14 +39,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String path = req.getServletPath();
             String method = req.getMethod();
 
-            System.out.println(path);
-
             if (path.equals("/api/property/") && method.equalsIgnoreCase("GET")) {
                 filterChain.doFilter(req, res);
                 return;
             }
 
-            if (path.startsWith("/api/image/") && method.equalsIgnoreCase("GET")) {
+            if (matcher.match("/api/image/**", path) && method.equalsIgnoreCase("GET")) {
                 filterChain.doFilter(req, res);
                 return;
             }
