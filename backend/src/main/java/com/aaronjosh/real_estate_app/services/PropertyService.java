@@ -1,7 +1,9 @@
 package com.aaronjosh.real_estate_app.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
-import com.aaronjosh.real_estate_app.dto.PropertyDto;
-import com.aaronjosh.real_estate_app.models.FileEntity;
+import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
+import com.aaronjosh.real_estate_app.dto.property.PropertyDtoRes;
+import com.aaronjosh.real_estate_app.models.PropertyImageEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
+import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
 @Service
 @Transactional
@@ -26,16 +30,45 @@ public class PropertyService {
     @Autowired
     private PropertyRepository propertyRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     @Transactional(readOnly = true)
     public List<PropertyEntity> getProperties() {
         return propertyRepo.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<PropertyEntity> getMyPropeties() {
+    public List<PropertyDtoRes> getMyPropeties() {
         UserEntity user = userService.getUserEntity();
 
-        return propertyRepo.findByHostId(user.getId());
+        List<PropertyDtoRes> properties = propertyRepo.findByHostId(user.getId()).stream().map(property -> {
+            List<String> images = new ArrayList<String>();
+
+            property.getImages().forEach(image -> {
+                images.add("http://localhost:8080/api/image/" + image.getId());
+            });
+
+            PropertyDtoRes newProperty = new PropertyDtoRes();
+
+            newProperty.setId(property.getId());
+            newProperty.setTitle(property.getTitle());
+            newProperty.setAddress(property.getAddress());
+            newProperty.setCity(property.getCity());
+            newProperty.setDescription(property.getDescription());
+            newProperty.setMaxGuest(property.getMaxGuest());
+            newProperty.setPrice(property.getPrice());
+            newProperty.setPropertyType(property.getPropertyType());
+            newProperty.setTotalBath(property.getTotalBath());
+            newProperty.setTotalBed(property.getTotalBed());
+            newProperty.setTotalBedroom(property.getTotalBedroom());
+            newProperty.setStatus(property.getStatus());
+            newProperty.setImage(images);
+
+            return newProperty;
+        }).collect(Collectors.toList());
+
+        return properties;
     }
 
     @Transactional(readOnly = true)
@@ -48,7 +81,7 @@ public class PropertyService {
     }
 
     public PropertyEntity addProperty(PropertyDto propertyDto) {
-        UserEntity user = userService.getUserEntity();
+        UserEntity jwtUser = userService.getUserEntity();
 
         // creating new property object
         PropertyEntity property = new PropertyEntity();
@@ -65,13 +98,10 @@ public class PropertyService {
         property.setAddress(propertyDto.getAddress());
         property.setCity(propertyDto.getCity());
 
-        // adding the relation of property to the user
-        property.setHost(user);
-
         // adding the relation of images to property
         for (MultipartFile image : propertyDto.getImages()) {
             try {
-                FileEntity file = new FileEntity();
+                PropertyImageEntity file = new PropertyImageEntity();
 
                 file.setName(image.getOriginalFilename());
                 file.setType(image.getContentType());
@@ -83,6 +113,11 @@ public class PropertyService {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process image file", e);
             }
         }
+
+        UserEntity userRef = userRepo.findById(jwtUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        property.setHost(userRef);
 
         // saving the property
         return propertyRepo.save(property);

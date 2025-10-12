@@ -1,6 +1,8 @@
 package com.aaronjosh.real_estate_app.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -34,6 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userRepository = userRepository;
     }
 
+    protected List<String> publicUrls = new ArrayList<>(List.of("/api/property/", "/api/image/"));
+
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
@@ -44,6 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println(path);
 
             if (path.equals("/api/property/") && method.equalsIgnoreCase("GET")) {
+                filterChain.doFilter(req, res);
+                return;
+            }
+
+            if (path.startsWith("/api/image/")) {
                 filterChain.doFilter(req, res);
                 return;
             }
@@ -76,9 +85,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .orElseThrow(() -> new BadCredentialsException(email));
 
                 if (jwtService.isTokenValid(jwt, userEntity)) {
-                    System.out.println("Working here");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userEntity, jwt, userEntity.getAuthorities());
+                            userEntity, null, userEntity.getAuthorities());
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
