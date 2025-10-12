@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.aaronjosh.real_estate_app.dto.PropertyDto;
+import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
+import com.aaronjosh.real_estate_app.dto.property.PropertyDtoRes;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.services.PropertyService;
 
@@ -37,7 +38,7 @@ public class PropertyController {
 
     @GetMapping("/my-properties")
     public ResponseEntity<?> getMyProperties() {
-        List<PropertyEntity> properties = propertyService.getMyPropeties();
+        List<PropertyDtoRes> properties = propertyService.getMyPropeties();
 
         return ResponseEntity.ok(Map.of("success", true, "properties", properties));
     }

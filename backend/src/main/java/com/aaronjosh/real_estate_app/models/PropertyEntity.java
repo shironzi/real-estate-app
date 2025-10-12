@@ -81,10 +81,10 @@ public class PropertyEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "propertyEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileEntity> images = new ArrayList<>();
+    private List<PropertyImageEntity> images = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "host_id")
     private UserEntity host;
 
     public PropertyEntity() {
@@ -92,7 +92,7 @@ public class PropertyEntity {
 
     public PropertyEntity(UUID id, String title, String description, BigDecimal price,
             PropertyType propertyType, Integer maxGuest, Integer totalBedroom,
-            Integer totalBed, Integer totalBath, String address, String city, List<FileEntity> images) {
+            Integer totalBed, Integer totalBath, String address, String city, List<PropertyImageEntity> images) {
         this.id = id;
         this.title = title;
         this.description = description;

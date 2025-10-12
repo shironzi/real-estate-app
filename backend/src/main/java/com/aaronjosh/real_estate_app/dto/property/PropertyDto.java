@@ -1,4 +1,4 @@
-package com.aaronjosh.real_estate_app.dto;
+package com.aaronjosh.real_estate_app.dto.property;
 
 import java.math.BigDecimal;
 
