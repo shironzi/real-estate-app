@@ -27,7 +27,7 @@ const ManageProperty = () => {
       const res = await getMyProperties();
 
       if (res.success) {
-        setProperties(res?.properties);
+        setProperties(res?.properties ?? []);
         setLoading(false);
       }
     };
@@ -75,35 +75,36 @@ const ManageProperty = () => {
 
       {/* Property List */}
       <div className="manage-property-list">
-        {properties.map((property) => (
-          <div key={property.id} className="property-card">
-            <img
-              src={property.image}
-              alt={property.title}
-              width={120}
-              height={100}
-            />
-            <div className="property-info">
-              <h3>{property.title}</h3>
-              <h4>{property.location}</h4>
-              <h4>₱{property.price.toLocaleString()}</h4>
-              <h4 className={`status ${property.status.toLowerCase()}`}>
-                {property.status}
-              </h4>
+        {properties.length > 0 ? (
+          properties.map((property) => (
+            <div key={property.id} className="property-card">
+              <img src={property.image} alt={property.title} />
+              <div className="property-info">
+                <h3>{property.title}</h3>
+                <h4>{property.location}</h4>
+                <h4>₱{property.price.toLocaleString()}</h4>
+                <h4 className={`status ${property.status.toLowerCase()}`}>
+                  {property.status}
+                </h4>
+              </div>
+              <div className="property-actions">
+                <button className="property-actions-buttons edit-btn">
+                  <MdEdit />
+                </button>
+                <button
+                  className="property-actions-buttons delete-btn"
+                  onClick={() => handleDelete(property.id)}
+                >
+                  <MdDelete />
+                </button>
+              </div>
             </div>
-            <div className="property-actions">
-              <button className="property-actions-buttons edit-btn">
-                <MdEdit />
-              </button>
-              <button
-                className="property-actions-buttons delete-btn"
-                onClick={() => handleDelete(property.id)}
-              >
-                <MdDelete />
-              </button>
-            </div>
+          ))
+        ) : (
+          <div>
+            <h1>No properties</h1>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
