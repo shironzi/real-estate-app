@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 
 import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
 import com.aaronjosh.real_estate_app.dto.property.PropertyDtoRes;
+import com.aaronjosh.real_estate_app.dto.property.UpdatePropertyDto;
 import com.aaronjosh.real_estate_app.models.PropertyImageEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity;
@@ -123,31 +124,30 @@ public class PropertyService {
         return propertyRepo.save(property);
     }
 
-    // public PropertyEntity editProperty(PropertyDto propertyDto, UUID propertyId)
-    // {
-    // UserEntity user = userService.getUserEntity();
+    public PropertyEntity editProperty(UpdatePropertyDto propertyDto, UUID propertyId) {
+        UserEntity user = userService.getUserEntity();
 
-    // if (user.getRole() != Role.OWNER) {
-    // throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-    // "Only property owners are allowed to create a property.");
-    // }
+        PropertyEntity property = propertyRepo.findById(propertyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Property not found"));
 
-    // PropertyEntity property = propertyRepo.findById(propertyId)
-    // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-    // "Property not found"));
+        if (!user.getId().equals(property.getHost().getId())) {
+            throw new RuntimeException("You dont have access");
+        }
 
-    // property.setTitle(propertyDto.getTitle());
-    // property.setAddress(propertyDto.getAddress());
-    // property.setCity(propertyDto.getCity());
-    // property.setDescription(propertyDto.getDescription());
-    // property.setMaxGuest(propertyDto.getMaxGuest());
-    // property.setPrice(propertyDto.getPrice());
-    // property.setTotalBedroom(propertyDto.getTotalBedroom());
-    // property.setPropertyType(propertyDto.getPropertyType());
+        property.setTitle(propertyDto.getTitle());
+        property.setDescription(propertyDto.getDescription());
+        property.setPrice(propertyDto.getPrice());
+        property.setPropertyType(propertyDto.getPropertyType());
+        property.setMaxGuest(propertyDto.getMaxGuest());
+        property.setTotalBedroom(propertyDto.getTotalBedroom());
+        property.setTotalBed(propertyDto.getTotalBed());
+        property.setTotalBath(propertyDto.getTotalBath());
+        property.setAddress(propertyDto.getAddress());
+        property.setCity(propertyDto.getCity());
 
-    // return propertyRepo.save(property);
-    // }
-
+        return propertyRepo.save(property);
+    }
     // @Transactional(rollbackFor = Exception.class)
     // public void deleteProperty(UUID propertyId) {
     // PropertyEntity property = propertyRepo.findById(propertyId)
