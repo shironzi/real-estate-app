@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
 import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
-import com.aaronjosh.real_estate_app.dto.property.PropertyDtoRes;
+import com.aaronjosh.real_estate_app.dto.property.PropertyResDto;
 import com.aaronjosh.real_estate_app.dto.property.UpdatePropertyDto;
 import com.aaronjosh.real_estate_app.models.PropertyImageEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
@@ -34,51 +34,54 @@ public class PropertyService {
     @Autowired
     private UserRepository userRepo;
 
-    @Transactional(readOnly = true)
-    public List<PropertyEntity> getProperties() {
-        return propertyRepo.findAll();
+    protected PropertyResDto toDto(PropertyEntity property) {
+        List<String> images = new ArrayList<>();
+
+        property.getImages().forEach(image -> {
+            images.add("http://localhost:8080/api/image/" + image.getId());
+        });
+
+        PropertyResDto dto = new PropertyResDto();
+
+        dto.setId(property.getId());
+        dto.setTitle(property.getTitle());
+        dto.setAddress(property.getAddress());
+        dto.setCity(property.getCity());
+        dto.setDescription(property.getDescription());
+        dto.setMaxGuest(property.getMaxGuest());
+        dto.setPrice(property.getPrice());
+        dto.setPropertyType(property.getPropertyType());
+        dto.setTotalBath(property.getTotalBath());
+        dto.setTotalBed(property.getTotalBed());
+        dto.setTotalBedroom(property.getTotalBedroom());
+        dto.setStatus(property.getStatus());
+        dto.setImage(images);
+
+        return dto;
     }
 
     @Transactional(readOnly = true)
-    public List<PropertyDtoRes> getMyPropeties() {
+    public List<PropertyResDto> getProperties() {
+        List<PropertyEntity> properties = propertyRepo.findAll();
+
+        return properties.stream().map(this::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<PropertyResDto> getMyPropeties() {
         UserEntity user = userService.getUserEntity();
 
-        List<PropertyDtoRes> properties = propertyRepo.findByHostId(user.getId()).stream().map(property -> {
-            List<String> images = new ArrayList<String>();
+        return propertyRepo.findByHostId(user.getId()).stream().map(this::toDto)
+                .collect(Collectors.toList());
 
-            property.getImages().forEach(image -> {
-                images.add("http://localhost:8080/api/image/" + image.getId());
-            });
-
-            PropertyDtoRes newProperty = new PropertyDtoRes();
-
-            newProperty.setId(property.getId());
-            newProperty.setTitle(property.getTitle());
-            newProperty.setAddress(property.getAddress());
-            newProperty.setCity(property.getCity());
-            newProperty.setDescription(property.getDescription());
-            newProperty.setMaxGuest(property.getMaxGuest());
-            newProperty.setPrice(property.getPrice());
-            newProperty.setPropertyType(property.getPropertyType());
-            newProperty.setTotalBath(property.getTotalBath());
-            newProperty.setTotalBed(property.getTotalBed());
-            newProperty.setTotalBedroom(property.getTotalBedroom());
-            newProperty.setStatus(property.getStatus());
-            newProperty.setImage(images);
-
-            return newProperty;
-        }).collect(Collectors.toList());
-
-        return properties;
     }
 
     @Transactional(readOnly = true)
-    public PropertyEntity getPropertyById(UUID propertyId) {
+    public PropertyResDto getPropertyById(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
 
-        return property;
-
+        return toDto(property);
     }
 
     public PropertyEntity addProperty(PropertyDto propertyDto) {

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
-import com.aaronjosh.real_estate_app.dto.property.PropertyDtoRes;
-import com.aaronjosh.real_estate_app.models.PropertyEntity;
+import com.aaronjosh.real_estate_app.dto.property.PropertyResDto;
 import com.aaronjosh.real_estate_app.services.PropertyService;
 
 import jakarta.validation.Valid;
@@ -31,21 +30,21 @@ public class PropertyController {
 
     @GetMapping({ "", "/" })
     public ResponseEntity<?> getProperties() {
-        List<PropertyEntity> properties = propertyService.getProperties();
+        List<PropertyResDto> properties = propertyService.getProperties();
 
         return ResponseEntity.ok(Map.of("success", true, "properties", properties));
     }
 
     @GetMapping("/my-properties")
     public ResponseEntity<?> getMyProperties() {
-        List<PropertyDtoRes> properties = propertyService.getMyPropeties();
+        List<PropertyResDto> properties = propertyService.getMyPropeties();
 
         return ResponseEntity.ok(Map.of("success", true, "properties", properties));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProperty(@Valid @PathVariable UUID propertyId) {
-        PropertyEntity property = propertyService.getPropertyById(propertyId);
+        PropertyResDto property = propertyService.getPropertyById(propertyId);
 
         return ResponseEntity.ok(Map.of("success", true, "property", property));
     }

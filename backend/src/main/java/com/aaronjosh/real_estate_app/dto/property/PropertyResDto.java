@@ -10,7 +10,7 @@ import com.aaronjosh.real_estate_app.models.PropertyEntity.PropertyType;
 import lombok.Data;
 
 @Data
-public class PropertyDtoRes {
+public class PropertyResDto {
     private UUID id;
     private String title;
     private String description;
