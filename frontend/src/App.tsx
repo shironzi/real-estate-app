@@ -2,10 +2,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  redirect,
   Navigate,
   Outlet,
-  useNavigate,
 } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home/Home";

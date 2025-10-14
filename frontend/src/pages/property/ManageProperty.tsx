@@ -3,23 +3,17 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import "@/styles/property/manageProperty.css";
 import { useEffect, useState } from "react";
 import { getMyProperties } from "@/utils/property";
-
-type Property = {
-  id: number;
-  title: string;
-  location: string;
-  price: number;
-  status: "Available" | "Occupied" | "Pending";
-  type: string;
-  image: string;
-};
+import { PropertyTypesView } from "@/pages/property/Propertytypes";
 
 const ManageProperty = () => {
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<PropertyTypesView[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const handleDelete = (id: number) => {
-    setProperties((prev) => prev.filter((p) => p.id !== id));
+  const handleDelete = (propertyId: string) => {
+    if (!propertyId) {
+      throw new Error("Property ID is missing in search params");
+    }
+    setProperties((prev) => prev.filter((p) => p.id !== propertyId));
   };
 
   useEffect(() => {
@@ -78,10 +72,13 @@ const ManageProperty = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.id} className="property-card">
-              <img src={property.image} alt={property.title} />
+              {property.image.map((image) => (
+                <img src={image} alt={property.title} />
+              ))}
+
               <div className="property-info">
                 <h3>{property.title}</h3>
-                <h4>{property.location}</h4>
+                <h4>{property.address}</h4>
                 <h4>₱{property.price.toLocaleString()}</h4>
                 <h4 className={`status ${property.status.toLowerCase()}`}>
                   {property.status}

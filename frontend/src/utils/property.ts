@@ -16,8 +16,8 @@ export const createProperty = async (info: PropertyTypes) => {
         formData.append("propertyType", info.propertyType);
         formData.append("address", info.address)
 
-        if (info.images && info.images.length > 0) {
-            info.images.forEach((image) => {
+        if (info.image && info.image.length > 0) {
+            info.image.forEach((image) => {
                 formData.append("images", image);
             });
         }
@@ -39,6 +39,16 @@ export const getMyProperties = async () => {
         return await res.data;
     } catch (e: any) {
         console.error(e)
-        throw new Error("Something went wrong. Please try again.")
     }
+}
+
+export const getProperties = async () => {
+    const res = await api.get("/property/");
+
+    return await res.data;
+}
+
+export const getPropertyById = async (id: string) => {
+    const res = await api.get(`/property/${id}`)
+    return await res.data;
 }

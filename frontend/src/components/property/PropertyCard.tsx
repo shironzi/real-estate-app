@@ -3,23 +3,23 @@ import "@/styles/property/property.css";
 import { Link } from "react-router-dom";
 
 interface Props {
-  isFavorite: boolean;
-  setIsFavorite: (favorite: boolean) => void;
+  isFavorite?: boolean;
+  setIsFavorite?: (favorite: boolean) => void;
   title: string;
   price: number;
   totalNights: number;
   imageUrl: string;
-  id: string;
+  propertyId: string;
 }
 
 const PropertyCard = ({
-  isFavorite,
-  setIsFavorite,
+  isFavorite = false,
+  setIsFavorite = () => {},
   title,
   price,
   totalNights,
   imageUrl,
-  id,
+  propertyId,
 }: Props) => {
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -31,7 +31,7 @@ const PropertyCard = ({
   });
 
   return (
-    <Link to={`/property/${id}`} className="property-card-container">
+    <Link to={`/property/${propertyId}`} className="property-card-container">
       <img src={imageUrl} alt="propertyImage" />
       <button onClick={handleFavorite} className="favorite">
         {isFavorite ? <FaHeart size={25} /> : <FaRegHeart size={25} />}

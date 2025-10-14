@@ -17,13 +17,13 @@ const PropertyImages = () => {
       const image = e.target.files[0];
       setData((prev) => ({
         ...prev,
-        images: [...prev.images, image],
+        images: [...prev.image, image],
       }));
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    const newFiles = data.images.filter((_, i) => i !== index);
+    const newFiles = data.image.filter((_, i) => i !== index);
     setData((prev) => ({ ...prev, images: newFiles }));
   };
 
@@ -34,7 +34,7 @@ const PropertyImages = () => {
     if (e.target.files && e.target.files[0]) {
       const updatedFile = e.target.files[0];
       setData((prev) => {
-        const updatedImages = [...prev.images];
+        const updatedImages = [...prev.image];
         updatedImages[index] = updatedFile;
         return { ...prev, images: updatedImages };
       });
@@ -42,7 +42,7 @@ const PropertyImages = () => {
   };
 
   const handleNavigation = () => {
-    if (data.images.length < 1) {
+    if (data.image.length < 1) {
       setHasError(true);
       setErrorMessage("Property Image is required");
       return;
@@ -61,7 +61,7 @@ const PropertyImages = () => {
       <div className="image-grid">
         {hasError && <h2>{errorMessage}</h2>}
 
-        {data.images.map((file, index) => (
+        {data.image.map((file, index) => (
           <div key={index} className="image-card">
             <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
             <div className="image-actions">

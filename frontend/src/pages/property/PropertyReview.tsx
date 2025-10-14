@@ -19,16 +19,12 @@ const PropertyReview = () => {
     try {
       const res = await createProperty(data);
 
-      console.log(res.status);
-
       setMessage(res?.message || "Successfully created a property.");
       navigate("/property/manage");
     } catch (e: any) {
       setMessage(
         e?.response?.data?.message || e.message || "Something went wrong"
       );
-
-      console.log(e?.response?.status);
 
       console.error(e);
     } finally {
@@ -40,7 +36,7 @@ const PropertyReview = () => {
     <div>
       <h2>{data.title}</h2>
       <div>
-        {data.images.map((image, index) => (
+        {data.image.map((image, index) => (
           <img
             src={URL.createObjectURL(image)}
             key={index}

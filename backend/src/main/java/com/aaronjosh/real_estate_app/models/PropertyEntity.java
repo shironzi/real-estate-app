@@ -81,7 +81,7 @@ public class PropertyEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "propertyEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PropertyImageEntity> images = new ArrayList<>();
+    private List<PropertyImageEntity> image = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "host_id")
@@ -104,7 +104,7 @@ public class PropertyEntity {
         this.totalBath = totalBath;
         this.address = address;
         this.city = city;
-        this.images = images;
+        this.image = image;
         this.status = PropertyStatus.ACTIVE;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();

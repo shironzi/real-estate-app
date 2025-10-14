@@ -37,7 +37,7 @@ public class PropertyService {
     protected PropertyResDto toDto(PropertyEntity property) {
         List<String> images = new ArrayList<>();
 
-        property.getImages().forEach(image -> {
+        property.getImage().forEach(image -> {
             images.add("http://localhost:8080/api/image/" + image.getId());
         });
 
@@ -103,7 +103,7 @@ public class PropertyService {
         property.setCity(propertyDto.getCity());
 
         // adding the relation of images to property
-        for (MultipartFile image : propertyDto.getImages()) {
+        for (MultipartFile image : propertyDto.getImage()) {
             try {
                 PropertyImageEntity file = new PropertyImageEntity();
 
@@ -112,7 +112,7 @@ public class PropertyService {
                 file.setData(image.getBytes());
 
                 file.setPropertyEntity(property);
-                property.getImages().add(file);
+                property.getImage().add(file);
             } catch (java.io.IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to process image file", e);
             }

@@ -44,5 +44,5 @@ public class PropertyDto {
     private String city;
 
     @NotNull(message = "Images are required")
-    private MultipartFile[] images;
+    private MultipartFile[] image;
 }

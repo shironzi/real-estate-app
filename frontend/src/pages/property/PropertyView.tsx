@@ -1,34 +1,77 @@
-import { useProperty } from "@/context/PropertyContext";
+import { getPropertyById } from "@/utils/property";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import {
+  PropertyTypesView,
+  PropertyTypesViewDefaultData,
+} from "@/pages/property/Propertytypes";
 
 const PropertyView = () => {
-  const { data } = useProperty();
+  const [searchParams] = useSearchParams();
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [property, setProperty] = useState<PropertyTypesView>(
+    PropertyTypesViewDefaultData
+  );
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const propertyId = searchParams.get("id");
+
+        if (!propertyId) {
+          throw new Error("Property ID is missing in search params");
+        }
+
+        const res = await getPropertyById(propertyId);
+
+        if (res.success) {
+          setProperty(res.property);
+        }
+      } catch (e: any) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [searchParams]);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h2>{data.title}</h2>
+      <h2>{property.title}</h2>
       <div>
-        {data.images.map((image) => (
-          <img src={URL.createObjectURL(image)} />
+        {property.image.map((image: string) => (
+          <img src={image} />
         ))}
       </div>
 
-      <h3>{data.address}</h3>
+      <h3>{property.address}</h3>
       <div>
         <h4>
-          {data.maxGuest} {data.maxGuest > 1 ? "guests" : "guest"}
+          {property.maxGuest} {property.maxGuest > 1 ? "guests" : "guest"}
         </h4>
         <h4>
-          {data.totalBedroom} {data.totalBedroom > 1 ? "bedrooms" : "bedroom"}
+          {property.totalBedroom}{" "}
+          {property.totalBedroom > 1 ? "bedrooms" : "bedroom"}
         </h4>
         <h4>
-          {data.totalBed} {data.totalBed > 1 ? "beds" : "bed"}
+          {property.totalBed} {property.totalBed > 1 ? "beds" : "bed"}
         </h4>
         <h4>
-          {data.totalBath} {data.totalBath > 1 ? "bath" : "baths"}
+          {property.totalBath} {property.totalBath > 1 ? "bath" : "baths"}
         </h4>
       </div>
 
-      <p>{data.description}</p>
+      <p>{property.description}</p>
     </div>
   );
 };

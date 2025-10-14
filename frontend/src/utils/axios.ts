@@ -76,7 +76,7 @@ api.interceptors.response.use(
                 window.location.href = "/login";
             };
         } else if (error.response?.status >= 500) {
-            console.error("💥 Server error — try again later.");
+            console.error("Something went wrong. Please try again later.");
         }
         return Promise.reject(error);
     }

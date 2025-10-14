@@ -18,7 +18,7 @@ export type PropertyTypes = {
   totalBath: number;
   city: string;
   propertyType: "APARTMENT" | "HOUSE" | "VILLA" | "CABIN";
-  images: File[];
+  image: File[];
 };
 
 type PropertyContextType = {
@@ -37,7 +37,7 @@ const propertyData: PropertyTypes = {
   totalBath: 1,
   city: "",
   propertyType: "APARTMENT",
-  images: [],
+  image: [],
 };
 
 export const PropertyContext = createContext<PropertyContextType>({

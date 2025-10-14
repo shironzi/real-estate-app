@@ -125,7 +125,7 @@ const Navbar = () => {
             )}
           </div>
         ) : (
-          <Link to={"/register"} className="authentication link">
+          <Link to={"/login"} className="authentication link">
             Login / Signup
           </Link>
         )}

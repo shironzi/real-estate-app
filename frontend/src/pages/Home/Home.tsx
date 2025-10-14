@@ -1,22 +1,49 @@
 import PropertyCard from "@/components/property/PropertyCard";
-import { useState } from "react";
+import { getProperties } from "@/utils/property";
+import { useEffect, useState } from "react";
+import { PropertyTypesView } from "@/pages/property/Propertytypes";
 
 const Home = () => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [properties, setProperties] = useState<PropertyTypesView[]>([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const res = await getProperties();
+
+        if (res.success) {
+          setProperties(res.properties);
+        }
+      } catch (e: any) {
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProperties();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading....</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-black">
-      <PropertyCard
-        isFavorite={isFavorite}
-        setIsFavorite={(favorite: boolean) => setIsFavorite(favorite)}
-        title={"Title"}
-        price={100}
-        totalNights={2}
-        imageUrl={
-          "https://a0.muscache.com/im/pictures/0d8a93b3-f80d-4fc1-85ee-1f75dafed692.jpg?im_w=1200"
-        }
-        id="asdasd"
-      />
+      {properties.map((property) => (
+        <PropertyCard
+          // isFavorite={isFavorite}
+          // setIsFavorite={(favorite: boolean) => setIsFavorite(favorite)}
+          title={property.title}
+          price={property.price}
+          totalNights={1}
+          imageUrl={property.image[0]}
+          propertyId={property.id}
+        />
+      ))}
     </div>
   );
 };
