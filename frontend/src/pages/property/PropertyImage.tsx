@@ -17,14 +17,16 @@ const PropertyImages = () => {
       const image = e.target.files[0];
       setData((prev) => ({
         ...prev,
-        images: [...prev.image, image],
+        image: [...prev.image, image],
       }));
+
+      console.log(data);
     }
   };
 
   const handleRemoveImage = (index: number) => {
     const newFiles = data.image.filter((_, i) => i !== index);
-    setData((prev) => ({ ...prev, images: newFiles }));
+    setData((prev) => ({ ...prev, image: newFiles }));
   };
 
   const handleEditImage = (
@@ -36,7 +38,7 @@ const PropertyImages = () => {
       setData((prev) => {
         const updatedImages = [...prev.image];
         updatedImages[index] = updatedFile;
-        return { ...prev, images: updatedImages };
+        return { ...prev, image: updatedImages };
       });
     }
   };
@@ -45,7 +47,7 @@ const PropertyImages = () => {
     if (data.image.length < 1) {
       setHasError(true);
       setErrorMessage("Property Image is required");
-      return;
+      return;   
     }
 
     setHasError(false);

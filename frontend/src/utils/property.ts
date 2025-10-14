@@ -18,7 +18,7 @@ export const createProperty = async (info: PropertyTypes) => {
 
         if (info.image && info.image.length > 0) {
             info.image.forEach((image) => {
-                formData.append("images", image);
+                formData.append("image", image);
             });
         }
 

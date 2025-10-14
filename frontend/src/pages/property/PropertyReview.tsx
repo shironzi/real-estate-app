@@ -1,4 +1,4 @@
-import { useProperty } from "@/context/PropertyContext";
+import { propertyData, useProperty } from "@/context/PropertyContext";
 import { createProperty } from "@/utils/property";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const PropertyReview = () => {
   const navigate = useNavigate();
 
-  const { data } = useProperty();
+  const { data, setData } = useProperty();
   const [message, setMessage] = useState<string>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -19,8 +19,11 @@ const PropertyReview = () => {
     try {
       const res = await createProperty(data);
 
-      setMessage(res?.message || "Successfully created a property.");
-      navigate("/property/manage");
+      if (res.success) {
+        setMessage(res?.message || "Successfully created a property.");
+        setData(propertyData);
+        navigate("/property/manage");
+      }
     } catch (e: any) {
       setMessage(
         e?.response?.data?.message || e.message || "Something went wrong"

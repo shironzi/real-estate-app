@@ -26,7 +26,7 @@ type PropertyContextType = {
   setData: Dispatch<SetStateAction<PropertyTypes>>;
 };
 
-const propertyData: PropertyTypes = {
+export const propertyData: PropertyTypes = {
   title: "",
   price: 0,
   address: "",

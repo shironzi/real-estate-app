@@ -72,10 +72,7 @@ const ManageProperty = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <div key={property.id} className="property-card">
-              {property.image.map((image) => (
-                <img src={image} alt={property.title} />
-              ))}
-
+              <img src={property.image[0]} alt={property.title} />
               <div className="property-info">
                 <h3>{property.title}</h3>
                 <h4>{property.address}</h4>

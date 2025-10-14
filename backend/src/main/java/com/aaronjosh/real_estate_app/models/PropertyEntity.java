@@ -92,7 +92,7 @@ public class PropertyEntity {
 
     public PropertyEntity(UUID id, String title, String description, BigDecimal price,
             PropertyType propertyType, Integer maxGuest, Integer totalBedroom,
-            Integer totalBed, Integer totalBath, String address, String city, List<PropertyImageEntity> images) {
+            Integer totalBed, Integer totalBath, String address, String city, List<PropertyImageEntity> image) {
         this.id = id;
         this.title = title;
         this.description = description;
