@@ -9,14 +9,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aaronjosh.real_estate_app.dto.property.PropertyDto;
 import com.aaronjosh.real_estate_app.dto.property.PropertyResDto;
+import com.aaronjosh.real_estate_app.dto.property.UpdatePropertyDto;
 import com.aaronjosh.real_estate_app.services.PropertyService;
 
 import jakarta.validation.Valid;
@@ -57,21 +60,21 @@ public class PropertyController {
         return ResponseEntity.ok(Map.of("success", true, "message", "Property created Successfully"));
     }
 
-    // @PatchMapping("/{id}")
-    // public ResponseEntity<?> editProperty(@PathVariable UUID propertyId,
-    // @RequestBody PropertyDto propertyDto) {
-    // propertyService.editProperty(propertyDto, propertyId);
+    @PostMapping("/{id}")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<?> editProperty(@PathVariable UUID propertyId,
+            @RequestBody UpdatePropertyDto propertyDto) {
+        propertyService.editProperty(propertyDto, propertyId);
 
-    // return ResponseEntity.ok(Map.of("success", true, "message", "Property Updated
-    // Successfully"));
-    // }
+        return ResponseEntity.ok(Map.of("success", true, "message", "Property Updated Successfully"));
+    }
 
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> deleteProperty(@PathVariable UUID propertyId) {
-    // propertyService.deleteProperty(propertyId);
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<?> deleteProperty(@PathVariable UUID propertyId) {
+        propertyService.deleteProperty(propertyId);
 
-    // return ResponseEntity.ok(Map.of("success", true, "message", "Property Deleted
-    // Successfully"));
-    // }
+        return ResponseEntity.ok(Map.of("success", true, "message", "Property Deleted Successfully"));
+    }
 
 }

@@ -134,7 +134,10 @@ public class PropertyService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Property not found"));
 
-        if (!user.getId().equals(property.getHost().getId())) {
+        UUID hostId = property.getHost().getId();
+        UUID userId = user.getId();
+
+        if (!userId.equals(hostId)) {
             throw new RuntimeException("You dont have access");
         }
 
@@ -151,21 +154,21 @@ public class PropertyService {
 
         return propertyRepo.save(property);
     }
-    // @Transactional(rollbackFor = Exception.class)
-    // public void deleteProperty(UUID propertyId) {
-    // PropertyEntity property = propertyRepo.findById(propertyId)
-    // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-    // "Property not found"));
 
-    // UUID hostId = property.getHostId();
-    // UserEntity user = userService.getUserEntity();
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteProperty(UUID propertyId) {
+        PropertyEntity property = propertyRepo.findById(propertyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Property not found"));
 
-    // if (!hostId.equals(user.getId()) && user.getRole() != Role.ADMIN) {
-    // throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have
-    // access to delete this property");
-    // }
+        UUID hostId = property.getHost().getId();
+        UUID userId = userService.getUserEntity().getId();
 
-    // propertyRepo.delete(property);
-    // }
+        if (!hostId.equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have access to delete this property");
+        }
+
+        propertyRepo.delete(property);
+    }
 
 }
