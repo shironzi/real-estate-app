@@ -1,19 +1,25 @@
-import { Link } from "react-router-dom";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import "@/styles/property/manageProperty.css";
 import { useEffect, useState } from "react";
 import { getMyProperties } from "@/utils/property";
 import { PropertyTypesView } from "@/pages/property/Propertytypes";
+import PropertyCard from "@/components/property/PropertyCard";
 
 const ManageProperty = () => {
+  const navigate = useNavigate();
+
   const [properties, setProperties] = useState<PropertyTypesView[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const handleDelete = (propertyId: string) => {
+  const handleOnDelete = (propertyId: string) => {
     if (!propertyId) {
       throw new Error("Property ID is missing in search params");
     }
     setProperties((prev) => prev.filter((p) => p.id !== propertyId));
+  };
+
+  const handleOnEdit = (propertyId: string) => {
+    navigate(`/property/edit/info/${propertyId}`);
   };
 
   useEffect(() => {
@@ -71,28 +77,17 @@ const ManageProperty = () => {
       <div className="manage-property-list">
         {properties.length > 0 ? (
           properties.map((property) => (
-            <div key={property.id} className="property-card">
-              <img src={property.image[0]} alt={property.title} />
-              <div className="property-info">
-                <h3>{property.title}</h3>
-                <h4>{property.address}</h4>
-                <h4>₱{property.price.toLocaleString()}</h4>
-                <h4 className={`status ${property.status.toLowerCase()}`}>
-                  {property.status}
-                </h4>
-              </div>
-              <div className="property-actions">
-                <button className="property-actions-buttons edit-btn">
-                  <MdEdit />
-                </button>
-                <button
-                  className="property-actions-buttons delete-btn"
-                  onClick={() => handleDelete(property.id)}
-                >
-                  <MdDelete />
-                </button>
-              </div>
-            </div>
+            <PropertyCard
+              propertyId={property.id}
+              title={property.title}
+              address={property.address}
+              price={property.price}
+              image={property.image}
+              status={property.status}
+              onDelete={(propertyId) => handleOnDelete(propertyId)}
+              onEdit={(propertyId) => handleOnEdit(propertyId)}
+              isManageMode={true}
+            />
           ))
         ) : (
           <div>

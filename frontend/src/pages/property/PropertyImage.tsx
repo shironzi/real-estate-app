@@ -3,11 +3,12 @@ import { FaImage } from "react-icons/fa6";
 import "@/styles/property/propertyImage.css";
 import { useProperty } from "@/context/PropertyContext";
 import { ChangeEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PropertyImages = () => {
   const navigate = useNavigate();
 
+  const { id } = useParams();
   const { data, setData } = useProperty();
   const [hasError, setHasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -47,11 +48,11 @@ const PropertyImages = () => {
     if (data.image.length < 1) {
       setHasError(true);
       setErrorMessage("Property Image is required");
-      return;   
+      return;
     }
 
     setHasError(false);
-    navigate("/property/review");
+    navigate(`/property/edit/review/${id}`);
   };
 
   const handleBack = () => {
@@ -65,7 +66,14 @@ const PropertyImages = () => {
 
         {data.image.map((file, index) => (
           <div key={index} className="image-card">
-            <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
+            <img
+              src={
+                typeof file === "string"
+                  ? file
+                  : URL.createObjectURL(file as File)
+              }
+              alt={`preview-${index}`}
+            />
             <div className="image-actions">
               <button onClick={() => handleRemoveImage(index)}>🗑️</button>
               <label>

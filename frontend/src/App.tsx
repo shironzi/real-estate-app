@@ -39,9 +39,18 @@ function App() {
           {/* Property Routes */}
           <Route element={<ProtectedRoutes />}>
             <Route path="/property/form" element={<PropertyForm />} />
-            <Route path="/property/images" element={<PropertyImage />} />
+            <Route path="/property/image" element={<PropertyImage />} />
             <Route path="/property/review" element={<PropertyReview />} />
             <Route path="/property/manage" element={<ManageProperty />} />
+            <Route path="/property/edit/info/:id" element={<PropertyForm />} />
+            <Route
+              path="/property/edit/image/:id"
+              element={<PropertyImage />}
+            />
+            <Route
+              path="/property/edit/review/:id"
+              element={<PropertyReview />}
+            />
             <Route path="/property/:id" element={<PropertyView />} />
           </Route>
         </Routes>

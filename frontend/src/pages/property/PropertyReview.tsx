@@ -1,10 +1,11 @@
 import { propertyData, useProperty } from "@/context/PropertyContext";
 import { createProperty } from "@/utils/property";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PropertyReview = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const { data, setData } = useProperty();
   const [message, setMessage] = useState<string>();
@@ -41,9 +42,13 @@ const PropertyReview = () => {
       <div>
         {data.image.map((image, index) => (
           <img
-            src={URL.createObjectURL(image)}
+            src={
+              typeof image === "string"
+                ? image
+                : URL.createObjectURL(image as File)
+            }
+            alt={`preview-${index}`}
             key={index}
-            alt="property_image_preview"
           />
         ))}
       </div>
@@ -75,7 +80,11 @@ const PropertyReview = () => {
           <h3>Prev</h3>
         </button>
         <button onClick={handleCreate} disabled={isFetching}>
-          <h3>{isFetching ? "Creating...." : "Create"}</h3>
+          {id ? (
+            <h3>{isFetching ? "Updating...." : "Update"}</h3>
+          ) : (
+            <h3>{isFetching ? "Creating...." : "Create"}</h3>
+          )}
         </button>
       </div>
     </div>

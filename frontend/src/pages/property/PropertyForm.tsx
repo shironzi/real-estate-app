@@ -1,16 +1,53 @@
 import "@/styles/property/propertyForm.css";
 import { handleNumeric } from "./PropertyFunc";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useProperty } from "@/context/PropertyContext";
+import { useEffect, useState } from "react";
+import { getPropertyById } from "@/utils/property";
 
 const PropertyForm = () => {
   const navigate = useNavigate();
 
+  const { id } = useParams();
   const { data, setData } = useProperty();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleNavigation = () => {
-    navigate("/property/images");
+    if (id) {
+      navigate(`/property/edit/image/${id}`);
+      return;
+    }
+    navigate("/property/image");
   };
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchProperty = async () => {
+      try {
+        setLoading(true);
+
+        const res = await getPropertyById(id);
+        if (res.success) {
+          setData(res.property);
+        }
+      } catch (e: any) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading....</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="property-form">

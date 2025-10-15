@@ -45,7 +45,7 @@ public class PropertyController {
         return ResponseEntity.ok(Map.of("success", true, "properties", properties));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{propertyId}")
     public ResponseEntity<?> getProperty(@Valid @PathVariable UUID propertyId) {
         PropertyResDto property = propertyService.getPropertyById(propertyId);
 

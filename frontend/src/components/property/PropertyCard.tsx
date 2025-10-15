@@ -9,12 +9,13 @@ interface Props {
   address: string;
   price: number;
   status: string;
-  totalNights: number;
+  totalNights?: number;
   image: string[];
   isManageMode: boolean;
-  isFavorite: boolean;
+  isFavorite?: boolean;
   onFavorite?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onEdit?: (id: string) => void;
 }
 
 const PropertyCard = ({
@@ -24,11 +25,12 @@ const PropertyCard = ({
   image,
   price,
   status = "AVAILABLE",
-  totalNights,
+  totalNights = 1,
   isManageMode,
   isFavorite = false,
   onFavorite,
   onDelete,
+  onEdit,
 }: Props) => {
   const formatted = price.toLocaleString("en-US", {
     style: "currency",
@@ -50,7 +52,10 @@ const PropertyCard = ({
 
       {isManageMode && (
         <div className="property-actions">
-          <button className="property-actions-buttons edit-btn">
+          <button
+            className="property-actions-buttons edit-btn"
+            onClick={() => onEdit && onEdit(propertyId)}
+          >
             <MdEdit />
           </button>
           <button
