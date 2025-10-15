@@ -33,17 +33,28 @@ const Home = () => {
 
   return (
     <div className="bg-black">
-      {properties.map((property) => (
-        <PropertyCard
-          // isFavorite={isFavorite}
-          // setIsFavorite={(favorite: boolean) => setIsFavorite(favorite)}
-          title={property.title}
-          price={property.price}
-          totalNights={1}
-          imageUrl={property.image[0]}
-          propertyId={property.id}
-        />
-      ))}
+      <div className="home-properties">
+        {properties?.map((property) => (
+          <PropertyCard
+            key={property.id}
+            propertyId={property.id}
+            title={property.title}
+            price={property.price}
+            totalNights={1}
+            image={property.image}
+            address={property.address}
+            status={property.status}
+            isFavorite={false}
+            isManageMode={false}
+          />
+        ))}
+      </div>
+
+      {!properties.length && (
+        <div>
+          <h1>No Properties yet!</h1>
+        </div>
+      )}
     </div>
   );
 };
