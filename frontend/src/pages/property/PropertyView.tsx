@@ -52,7 +52,10 @@ const PropertyView = () => {
         ))}
       </div>
 
-      <h3>{property.address}</h3>
+      <div>
+        <h2>{property.title}</h2>
+        <h3>{property.address}</h3>
+      </div>
       <div>
         <h4>
           {property.maxGuest} {property.maxGuest > 1 ? "guests" : "guest"}
