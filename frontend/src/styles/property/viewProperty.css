@@ -1,0 +1,9 @@
+.view-amenities {
+    display: flex;
+    flex-direction: row;
+    column-gap: 50px;
+}
+
+.view-amenities li::marker{
+    color: #fff;
+}

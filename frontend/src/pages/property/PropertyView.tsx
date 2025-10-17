@@ -6,6 +6,8 @@ import {
   PropertyTypesViewDefaultData,
 } from "@/pages/property/Propertytypes";
 
+import "@/styles/property/viewProperty.css";
+
 const PropertyView = () => {
   const { id } = useParams();
 
@@ -48,29 +50,36 @@ const PropertyView = () => {
       <h2>{property.title}</h2>
       <div>
         {property.image.map((image: string, index: number) => (
-          <img src={image} key={index} />
+          <img src={image} key={index} alt={`property-image-${image}`} />
         ))}
       </div>
 
-      <div>
-        <h2>{property.title}</h2>
-        <h3>{property.address}</h3>
-      </div>
-      <div>
-        <h4>
-          {property.maxGuest} {property.maxGuest > 1 ? "guests" : "guest"}
-        </h4>
-        <h4>
-          {property.totalBedroom}{" "}
-          {property.totalBedroom > 1 ? "bedrooms" : "bedroom"}
-        </h4>
-        <h4>
-          {property.totalBed} {property.totalBed > 1 ? "beds" : "bed"}
-        </h4>
-        <h4>
-          {property.totalBath} {property.totalBath > 1 ? "bath" : "baths"}
-        </h4>
-      </div>
+      <h3>
+        {property.title}, {property.address}
+      </h3>
+      <ul className="view-amenities">
+        <li>
+          <h4>
+            {property.maxGuest} {property.maxGuest > 1 ? "guests" : "guest"}
+          </h4>
+        </li>
+        <li>
+          <h4>
+            {property.totalBedroom}{" "}
+            {property.totalBedroom > 1 ? "bedrooms" : "bedroom"}
+          </h4>
+        </li>
+        <li>
+          <h4>
+            {property.totalBed} {property.totalBed > 1 ? "beds" : "bed"}
+          </h4>
+        </li>
+        <li>
+          <h4>
+            {property.totalBath} {property.totalBath > 1 ? "bath" : "baths"}
+          </h4>
+        </li>
+      </ul>
 
       <p>{property.description}</p>
     </div>
