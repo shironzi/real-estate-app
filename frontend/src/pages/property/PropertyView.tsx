@@ -1,13 +1,13 @@
 import { getPropertyById } from "@/utils/property";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   PropertyTypesView,
   PropertyTypesViewDefaultData,
 } from "@/pages/property/Propertytypes";
 
 const PropertyView = () => {
-  const [searchParams] = useSearchParams();
+  const { id } = useParams();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [property, setProperty] = useState<PropertyTypesView>(
@@ -17,13 +17,11 @@ const PropertyView = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const propertyId = searchParams.get("id");
-
-        if (!propertyId) {
+        if (!id) {
           throw new Error("Property ID is missing in search params");
         }
 
-        const res = await getPropertyById(propertyId);
+        const res = await getPropertyById(id);
 
         if (res.success) {
           setProperty(res.property);
@@ -35,7 +33,7 @@ const PropertyView = () => {
     };
 
     fetchProperty();
-  }, [searchParams]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -49,8 +47,8 @@ const PropertyView = () => {
     <div>
       <h2>{property.title}</h2>
       <div>
-        {property.image.map((image: string) => (
-          <img src={image} />
+        {property.image.map((image: string, index: number) => (
+          <img src={image} key={index} />
         ))}
       </div>
 
