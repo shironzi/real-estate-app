@@ -24,4 +24,5 @@ public class PropertyResDto {
     private String City;
     private PropertyStatus status;
     private List<String> image;
+    private Boolean isFavorite;
 }
