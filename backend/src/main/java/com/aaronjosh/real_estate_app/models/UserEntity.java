@@ -87,6 +87,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PropertyEntity> properties;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoriteEntity> favorites;
+
     public UserEntity() {
     }
 

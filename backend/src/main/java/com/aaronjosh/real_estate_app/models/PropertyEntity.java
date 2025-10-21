@@ -87,6 +87,9 @@ public class PropertyEntity {
     @JoinColumn(name = "host_id")
     private UserEntity host;
 
+    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL)
+    private FavoriteEntity favorite;
+
     public PropertyEntity() {
     }
 
