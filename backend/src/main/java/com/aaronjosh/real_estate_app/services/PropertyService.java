@@ -34,6 +34,9 @@ public class PropertyService {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private FavoriteService favoriteService;
+
     protected PropertyResDto toDto(PropertyEntity property) {
         List<String> images = new ArrayList<>();
 
@@ -56,6 +59,9 @@ public class PropertyService {
         dto.setTotalBedroom(property.getTotalBedroom());
         dto.setStatus(property.getStatus());
         dto.setImage(images);
+
+        Boolean isFavorite = favoriteService.getFavorite(property.getId());
+        dto.setIsFavorite(isFavorite);
 
         return dto;
     }
