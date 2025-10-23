@@ -11,7 +11,8 @@ export type PropertyTypesView = {
     totalBath: number;
     city: string;
     propertyType: "APARTMENT" | "HOUSE" | "VILLA" | "CABIN";
-    image: string[]
+    image: string[];
+    isFavorite: boolean;
 };
 
 export const PropertyTypesViewDefaultData: PropertyTypesView = {
@@ -27,5 +28,6 @@ export const PropertyTypesViewDefaultData: PropertyTypesView = {
     totalBath: 0,
     city: "",
     propertyType: "APARTMENT",
-    image: []
+    image: [],
+    isFavorite: false
 };
