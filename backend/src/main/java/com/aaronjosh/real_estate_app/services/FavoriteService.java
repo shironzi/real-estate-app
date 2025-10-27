@@ -44,10 +44,12 @@ public class FavoriteService {
     
     // Removes a favorite entry by its UUID
     public void removeFavorite(UUID propertyId) {
+        UserEntity user = userService.getUserEntity();
+
         PropertyEntity property = propertyRepo.findById(propertyId)
             .orElseThrow(() -> new RuntimeException("Property not found"));
 
-        FavoriteEntity favorite = favoriteRepo.findById(property.getFavorite().getId())
+        FavoriteEntity favorite = favoriteRepo.findByPropertyIdAndUserId(property.getFavorite().getId(), user.getId())
                 .orElseThrow(() -> new RuntimeException("Favorite not found"));
             
         favoriteRepo.delete(favorite);
