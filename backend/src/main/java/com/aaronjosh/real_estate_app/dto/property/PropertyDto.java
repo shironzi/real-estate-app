@@ -45,4 +45,6 @@ public class PropertyDto {
 
     @NotNull(message = "Images are required")
     private MultipartFile[] image;
+
+    private Boolean isFavorite = false;
 }
