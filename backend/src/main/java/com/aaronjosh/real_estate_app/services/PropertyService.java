@@ -60,8 +60,12 @@ public class PropertyService {
         dto.setStatus(property.getStatus());
         dto.setImage(images);
 
-        Boolean isFavorite = favoriteService.getFavorite(property.getId());
-        dto.setIsFavorite(isFavorite);
+        // UserEntity user = userService.getUserEntity();
+
+        // if (user != null) {
+        // Boolean isFavorite = favoriteService.getFavorite(property.getId());
+        // dto.setIsFavorite(isFavorite);
+        // }
 
         return dto;
     }

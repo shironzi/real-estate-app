@@ -21,7 +21,6 @@ import com.aaronjosh.real_estate_app.dto.auth.RegisterReqDto;
 import com.aaronjosh.real_estate_app.exceptions.EmailAlreadyExistsException;
 import com.aaronjosh.real_estate_app.exceptions.PasswordNotMatchException;
 import com.aaronjosh.real_estate_app.models.UserEntity;
-import com.aaronjosh.real_estate_app.models.UserEntity.Role;
 import com.aaronjosh.real_estate_app.services.AuthService;
 import com.aaronjosh.real_estate_app.services.UserService;
 
@@ -85,9 +84,8 @@ public class AuthController {
         try {
             UserEntity user = userService.getUserEntity();
 
-            Role role = user.getRole();
-
-            return ResponseEntity.ok().body(Map.of("success", true, "message", "Token is valid", "role", role));
+            return ResponseEntity.ok().body(Map.of("success", true, "message", "Token is valid", "role", user.getRole(),
+                    "name", user.getFirstname() + user.getLastname(), "email", user.getEmail()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

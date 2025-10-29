@@ -20,64 +20,67 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+        @Autowired
+        private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // using bcrypt for the password hashing
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        // using bcrypt for the password hashing
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                // removing csrf for rest api
-                .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
-                // handling the session validity
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http
+                                // removing csrf for rest api
+                                .csrf(csrf -> csrf.disable())
+                                .cors(Customizer.withDefaults())
+                                // handling the session validity
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // Setting the authorization on routes
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/verify", "/api/auth/logout").authenticated()
-                        .requestMatchers("/api/auth/**").anonymous()
-                        .requestMatchers(HttpMethod.POST, "/api/property", "/api/property/**").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/property/**").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.GET, "/api/property/my-properties").hasRole("OWNER")
-                        .requestMatchers(HttpMethod.GET, "/api/property/", "/api/image/**").permitAll()
-                        .anyRequest().authenticated())
+                                // Setting the authorization on routes
+                                .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers("/api/auth/login", "/api/auth/register").anonymous()
+                                                .requestMatchers(HttpMethod.POST, "/api/property", "/api/property/**")
+                                                .hasRole("OWNER")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/property/**").hasRole("OWNER")
+                                                .requestMatchers(HttpMethod.GET, "/api/property/my-properties")
+                                                .hasRole("OWNER")
+                                                .requestMatchers(HttpMethod.GET, "/api/property/", "/api/image/**")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
 
-                // disable basic auth and default form login
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .formLogin(form -> form.disable())
+                                // disable basic auth and default form login
+                                .httpBasic(httpBasic -> httpBasic.disable())
+                                .formLogin(form -> form.disable())
 
-                // exception handling with the bad credentials
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, authException) -> {
-                    res.setContentType("application/json");
+                                // exception handling with the bad credentials
+                                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, authException) -> {
+                                        res.setContentType("application/json");
 
-                    if (authException instanceof BadCredentialsException) {
-                        res.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        res.getWriter().write("""
-                                {"error":"Forbidden","message":"%s"}
-                                """.formatted(authException.getMessage()));
-                    } else if (authException instanceof InsufficientAuthenticationException) {
-                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        res.getWriter().write("""
-                                {"error":"Unauthorized","message":"%s"}
-                                """.formatted(authException.getMessage()));
-                        System.out.println(authException.getMessage());
-                    } else {
-                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        res.getWriter().write("""
-                                {"error":"Unauthorized","message":"%s"}
-                                """.formatted(authException.getMessage()));
-                    }
-                }))
+                                        if (authException instanceof BadCredentialsException) {
+                                                res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                                                res.getWriter().write("""
+                                                                {"error":"Forbidden","message":"%s"}
+                                                                """.formatted(authException.getMessage()));
+                                        } else if (authException instanceof InsufficientAuthenticationException) {
+                                                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                                res.getWriter().write("""
+                                                                {"error":"Unauthorized","message":"%s"}
+                                                                """.formatted(authException.getMessage()));
+                                                System.out.println(authException.getMessage());
+                                        } else {
+                                                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                                res.getWriter().write("""
+                                                                {"error":"Unauthorized","message":"%s"}
+                                                                """.formatted(authException.getMessage()));
+                                        }
+                                }))
 
-                // validates token
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                                // validates token
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

@@ -19,7 +19,7 @@ public class FavoriteService {
 
     @Autowired
     private PropertyRepository propertyRepo;
-    
+
     @Autowired
     private UserService userService;
 
@@ -41,17 +41,17 @@ public class FavoriteService {
 
         favoriteRepo.save(favorite);
     }
-    
+
     // Removes a favorite entry by its UUID
     public void removeFavorite(UUID propertyId) {
         UserEntity user = userService.getUserEntity();
 
         PropertyEntity property = propertyRepo.findById(propertyId)
-            .orElseThrow(() -> new RuntimeException("Property not found"));
+                .orElseThrow(() -> new RuntimeException("Property not found"));
 
         FavoriteEntity favorite = favoriteRepo.findByPropertyIdAndUserId(property.getFavorite().getId(), user.getId())
                 .orElseThrow(() -> new RuntimeException("Favorite not found"));
-            
+
         favoriteRepo.delete(favorite);
     }
 }
