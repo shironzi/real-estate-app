@@ -74,18 +74,13 @@ export const logout = async () => {
 	}
 };
 
-export const verifyToken = async (setUserData: (data: any) => void) => {
+export const verifyToken = async () => {
 	try {
-		const res = await api.post("/auth/verify");
+		const { data } = await api.post("/auth/verify");
 
-		setUserData({
-			name: res.data.name,
-			email: res.data.email,
-			role: res.data.role,
-			isAuthenticated: true,
-		});
+		console.log(data)
 
-		return res.status;
+		return data;
 	} catch (err: any) {
 		localStorage.removeItem("token");
 		throw new Error(err.response.data.message);

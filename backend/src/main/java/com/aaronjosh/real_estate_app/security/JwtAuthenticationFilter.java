@@ -32,19 +32,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     AntPathMatcher matcher = new AntPathMatcher();
 
+    @Override
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String path = req.getServletPath();
             String method = req.getMethod();
+            final String authHeader = req.getHeader("Authorization");
 
-            if (path.equals("/api/property/") && method.equalsIgnoreCase("GET")) {
+            if (path.equals("/api/property/") &&
+                    method.equalsIgnoreCase("GET")) {
                 filterChain.doFilter(req, res);
                 return;
             }
 
-            if (matcher.match("/api/image/**", path) && method.equalsIgnoreCase("GET")) {
+            if (matcher.match("/api/image/**", path) && method.equalsIgnoreCase("GET") &&
+                    authHeader == null) {
                 filterChain.doFilter(req, res);
                 return;
             }
@@ -53,10 +57,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(req, res);
                 return;
             }
-
-            final String authHeader = req.getHeader("Authorization");
-
-            System.out.println(authHeader);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 throw new InsufficientAuthenticationException("Missing or invalid Authorization header");

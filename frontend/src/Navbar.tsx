@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import "./styles/Navbar.css";
 import { useEffect, useState } from "react";
@@ -10,7 +10,6 @@ import { useUserData } from "./context/UserContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { userData, setUserData } = useUserData();
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -36,8 +35,21 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (!userData.isAuthenticated && token) {
-      verifyToken(setUserData);
+    const verifyUser = async () => {
+      const res = await verifyToken();
+
+      console.log(res);
+
+      // setUserData({
+      //   name: res.name,
+      //   email: res.email,
+      //   role: res.role,
+      //   isAuthenticated: true,
+      // });
+    };
+
+    if (token) {
+      verifyUser();
     }
   }, []);
 

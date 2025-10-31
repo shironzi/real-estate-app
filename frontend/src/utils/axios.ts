@@ -23,6 +23,7 @@ import axios, { AxiosError } from 'axios'
 // Create axios instance with the base url
 const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
+    withCredentials: true
 })
 
 /**
@@ -37,12 +38,22 @@ api.interceptors.request.use(
         const token = localStorage.getItem("token");
         const currentPage = window.location.pathname;
 
+        console.log(token)
+
         if (token && (currentPage === "/login" || currentPage === "/register")) {
             window.location.href = "/";
         }
 
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        if (!config.headers['Content-Type']) {
+            if (config.data instanceof FormData) {
+                config.headers['Content-Type'] = "multipart/form-data";
+            } else {
+                config.headers['Content-Type'] = "application/json";
+            }
         }
 
         return config;
@@ -65,6 +76,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
+
+        console.log(error)
 
         if (!error.response) {
             console.error("🌐 No internet connection or server not reachable.");
