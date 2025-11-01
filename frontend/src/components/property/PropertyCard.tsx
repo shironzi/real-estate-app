@@ -13,7 +13,7 @@ interface Props {
   image: string[];
   isManageMode: boolean;
   isFavorite?: boolean;
-  onFavorite?: (id: string) => void;
+  onFavorite?: (propertyId: string) => void;
   onDelete?: (id: string) => void;
   onEdit?: (id: string) => void;
 }

@@ -12,6 +12,7 @@ import com.aaronjosh.real_estate_app.repositories.FavoriteRepository;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 
 @Service
+
 public class FavoriteService {
 
     @Autowired
@@ -29,15 +30,17 @@ public class FavoriteService {
     }
 
     // Adds a favorite for the current user and the specified property.
+    // @Transactional
     public void addFavorite(UUID propertyId) {
         UserEntity user = userService.getUserEntity();
+
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
 
         FavoriteEntity favorite = new FavoriteEntity();
 
-        favorite.setUser(user);
-        favorite.setProperty(property);
+        user.addFavorite(favorite);
+        property.addFavorite(favorite);
 
         favoriteRepo.save(favorite);
     }

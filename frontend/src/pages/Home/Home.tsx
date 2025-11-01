@@ -2,10 +2,15 @@ import PropertyCard from "@/components/property/PropertyCard";
 import { getProperties } from "@/utils/property";
 import { useEffect, useState } from "react";
 import { PropertyTypesView } from "@/pages/property/Propertytypes";
+import { addFavorite } from "@/utils/favorite";
 
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [properties, setProperties] = useState<PropertyTypesView[]>([]);
+
+  const handleFavorite = async (propertyId: string) => {
+    const res = await addFavorite(propertyId);
+  };
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -46,6 +51,7 @@ const Home = () => {
             status={property.status}
             isFavorite={false}
             isManageMode={false}
+            onFavorite={handleFavorite}
           />
         ))}
       </div>

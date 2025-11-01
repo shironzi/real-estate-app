@@ -23,7 +23,7 @@ public class FavoriteController {
     @Autowired
     private FavoriteService favoriteService;
 
-    @GetMapping("/{favoriteId}")
+    @GetMapping("/favorite/{favoriteId}")
     public ResponseEntity<?> getFavorite(@Valid @PathVariable UUID favoriteId) {
         Boolean favorite = favoriteService.getFavorite(favoriteId);
 
@@ -31,7 +31,7 @@ public class FavoriteController {
                 .ok(Map.of("success", true, "message", "successfully retrieve favorite", "favorite", favorite));
     }
 
-    @PostMapping("/{propertyId}")
+    @PostMapping("/favorite/{propertyId}")
     public ResponseEntity<?> addFavorite(@Valid @PathVariable UUID propertyId) {
         favoriteService.addFavorite(propertyId);
 

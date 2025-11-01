@@ -87,10 +87,15 @@ public class PropertyEntity {
     @JoinColumn(name = "host_id")
     private UserEntity host;
 
-    @ManyToMany(mappedBy = "property", cascade = CascadeType.ALL)
-    private List<FavoriteEntity> favorites;
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoriteEntity> favorites = new ArrayList<>();
 
     public PropertyEntity() {
+    }
+
+    public void addFavorite(FavoriteEntity favorite) {
+        favorites.add(favorite);
+        favorite.setProperty(this);
     }
 
     public PropertyEntity(UUID id, String title, String description, BigDecimal price,
