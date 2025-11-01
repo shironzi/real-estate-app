@@ -18,6 +18,7 @@ import com.aaronjosh.real_estate_app.dto.property.UpdatePropertyDto;
 import com.aaronjosh.real_estate_app.models.PropertyImageEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity;
+import com.aaronjosh.real_estate_app.repositories.FavoriteRepository;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
 
@@ -35,7 +36,7 @@ public class PropertyService {
     private UserRepository userRepo;
 
     @Autowired
-    private FavoriteService favoriteService;
+    private FavoriteRepository favoriteRepo;
 
     protected PropertyResDto toDto(PropertyEntity property) {
         List<String> images = new ArrayList<>();
@@ -60,12 +61,16 @@ public class PropertyService {
         dto.setStatus(property.getStatus());
         dto.setImage(images);
 
-        // UserEntity user = userService.getUserEntity();
+        UserEntity user = userService.getUserEntity();
+        boolean isFavorite = false;
 
-        // if (user != null) {
-        // Boolean isFavorite = favoriteService.getFavorite(property.getId());
-        // dto.setIsFavorite(isFavorite);
-        // }
+        if (user != null) {
+            isFavorite = favoriteRepo
+                    .findByProperty_IdAndUser_Id(property.getId(), user.getId())
+                    .isPresent();
+        }
+
+        dto.setIsFavorite(isFavorite);
 
         return dto;
     }

@@ -19,9 +19,10 @@ export async function login(email: string, password: string) {
 		const data = res.data;
 		localStorage.setItem("token", data.token);
 
+		console.log(data)
+
 		return data;
 	} catch (err: any) {
-		console.log(err);
 		if (
 			err.response &&
 			(err.response.status === 401 || err.response.status === 403)
@@ -77,8 +78,6 @@ export const logout = async () => {
 export const verifyToken = async () => {
 	try {
 		const { data } = await api.post("/auth/verify");
-
-		console.log(data)
 
 		return data;
 	} catch (err: any) {

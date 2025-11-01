@@ -38,17 +38,8 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "users")
-@ToString(exclude = "properties")
+@ToString(exclude = { "favorites", "properties" })
 public class UserEntity {
-
-    /**
-     * User Role
-     * -----------------
-     * Define user role in the system.
-     * - ADMIN: Full access to the system
-     * - OWNER: Can list and manage own properties
-     * - RENTER: Can search and rent property
-     */
     public enum Role {
         ADMIN,
         OWNER,

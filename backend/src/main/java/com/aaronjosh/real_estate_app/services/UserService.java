@@ -12,11 +12,12 @@ public class UserService {
     public UserEntity getUserEntity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UserEntity user = (UserEntity) authentication.getPrincipal();
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication.getPrincipal().equals("anonymousUser")) {
+            return null;
+        }
 
-        // String jwt = (String) authentication.getCredentials();
-
-        return user;
+        return (UserEntity) authentication.getPrincipal();
     }
 
 }

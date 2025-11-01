@@ -49,7 +49,8 @@ public class FavoriteService {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
 
-        FavoriteEntity favorite = favoriteRepo.findByPropertyIdAndUserId(property.getFavorite().getId(), user.getId())
+        FavoriteEntity favorite = favoriteRepo.findByProperty_IdAndUser_Id(property.getId(),
+                user.getId())
                 .orElseThrow(() -> new RuntimeException("Favorite not found"));
 
         favoriteRepo.delete(favorite);

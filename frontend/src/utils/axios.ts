@@ -38,8 +38,6 @@ api.interceptors.request.use(
         const token = localStorage.getItem("token");
         const currentPage = window.location.pathname;
 
-        console.log(token)
-
         if (token && (currentPage === "/login" || currentPage === "/register")) {
             window.location.href = "/";
         }
@@ -76,8 +74,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-
-        console.log(error)
 
         if (!error.response) {
             console.error("🌐 No internet connection or server not reachable.");

@@ -38,14 +38,12 @@ const Navbar = () => {
     const verifyUser = async () => {
       const res = await verifyToken();
 
-      console.log(res);
-
-      // setUserData({
-      //   name: res.name,
-      //   email: res.email,
-      //   role: res.role,
-      //   isAuthenticated: true,
-      // });
+      setUserData({
+        name: res.name,
+        email: res.email,
+        role: res.role,
+        isAuthenticated: true,
+      });
     };
 
     if (token) {

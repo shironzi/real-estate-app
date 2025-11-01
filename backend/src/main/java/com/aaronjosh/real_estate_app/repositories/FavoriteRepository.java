@@ -10,5 +10,5 @@ import com.aaronjosh.real_estate_app.models.FavoriteEntity;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, UUID> {
-    Optional<FavoriteEntity> findByPropertyIdAndUserId(UUID propertyId, UUID userId);
+    Optional<FavoriteEntity> findByProperty_IdAndUser_Id(UUID propertyId, UUID userId);
 }
