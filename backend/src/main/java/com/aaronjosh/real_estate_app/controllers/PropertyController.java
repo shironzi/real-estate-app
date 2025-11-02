@@ -31,7 +31,7 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
-    @GetMapping({ "", "/" })
+    @GetMapping("/")
     public ResponseEntity<?> getProperties() {
         List<PropertyResDto> properties = propertyService.getProperties();
 

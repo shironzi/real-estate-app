@@ -19,9 +19,10 @@ export async function login(email: string, password: string) {
 		const data = res.data;
 		localStorage.setItem("token", data.token);
 
+		console.log(data)
+
 		return data;
 	} catch (err: any) {
-		console.log(err);
 		if (
 			err.response &&
 			(err.response.status === 401 || err.response.status === 403)
@@ -68,24 +69,19 @@ export const logout = async () => {
 		const res = await api.post("/auth/logout");
 		localStorage.removeItem("token");
 
+		window.location.reload();
+
 		return res;
 	} catch (err: any) {
 		throw new Error(err.response.data.messages);
 	}
 };
 
-export const verifyToken = async (setUserData: (data: any) => void) => {
+export const verifyToken = async () => {
 	try {
-		const res = await api.post("/auth/verify");
+		const { data } = await api.post("/auth/verify");
 
-		setUserData({
-			name: res.data.name,
-			email: res.data.email,
-			role: res.data.role,
-			isAuthenticated: true,
-		});
-
-		return res.status;
+		return data;
 	} catch (err: any) {
 		localStorage.removeItem("token");
 		throw new Error(err.response.data.message);

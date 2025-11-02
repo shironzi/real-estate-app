@@ -11,12 +11,15 @@
 package com.aaronjosh.real_estate_app.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,17 +41,8 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "users")
-@ToString(exclude = "properties")
+@ToString(exclude = { "favorites", "properties" })
 public class UserEntity {
-
-    /**
-     * User Role
-     * -----------------
-     * Define user role in the system.
-     * - ADMIN: Full access to the system
-     * - OWNER: Can list and manage own properties
-     * - RENTER: Can search and rent property
-     */
     public enum Role {
         ADMIN,
         OWNER,
@@ -88,9 +82,15 @@ public class UserEntity {
     private List<PropertyEntity> properties;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FavoriteEntity> favorites;
+    @JsonIgnore
+    private List<FavoriteEntity> favorites = new ArrayList<>();
 
     public UserEntity() {
+    }
+
+    public void addFavorite(FavoriteEntity favorite) {
+        favorites.add(favorite);
+        favorite.setUser(this);
     }
 
     public UserEntity(String firstName, String lastName, String email, Role role) {

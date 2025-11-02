@@ -12,8 +12,8 @@ interface Props {
   totalNights?: number;
   image: string[];
   isManageMode: boolean;
-  isFavorite: boolean;
-  onFavorite?: (id: string) => void;
+  isFavorite?: boolean;
+  onFavorite?: (propertyId: string) => void;
   onDelete?: (id: string) => void;
   onEdit?: (id: string) => void;
 }

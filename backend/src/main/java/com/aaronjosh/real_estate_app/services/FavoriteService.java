@@ -1,5 +1,6 @@
 package com.aaronjosh.real_estate_app.services;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.aaronjosh.real_estate_app.repositories.FavoriteRepository;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 
 @Service
+
 public class FavoriteService {
 
     @Autowired
@@ -19,7 +21,7 @@ public class FavoriteService {
 
     @Autowired
     private PropertyRepository propertyRepo;
-    
+
     @Autowired
     private UserService userService;
 
@@ -31,27 +33,29 @@ public class FavoriteService {
     // Adds a favorite for the current user and the specified property.
     public void addFavorite(UUID propertyId) {
         UserEntity user = userService.getUserEntity();
+
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
 
-        FavoriteEntity favorite = new FavoriteEntity();
+        // checks if the favorite is alreadt exists.
+        Optional<FavoriteEntity> existingFavorite = favoriteRepo.findByProperty_IdAndUser_Id(property.getId(),
+                user.getId());
 
-        favorite.setUser(user);
-        favorite.setProperty(property);
-
-        favoriteRepo.save(favorite);
+        if (existingFavorite.isEmpty()) {
+            FavoriteEntity favorite = new FavoriteEntity();
+            user.addFavorite(favorite);
+            property.addFavorite(favorite);
+            favoriteRepo.save(favorite);
+        }
     }
-    
+
     // Removes a favorite entry by its UUID
     public void removeFavorite(UUID propertyId) {
         UserEntity user = userService.getUserEntity();
+        if (user == null)
+            return;
 
-        PropertyEntity property = propertyRepo.findById(propertyId)
-            .orElseThrow(() -> new RuntimeException("Property not found"));
-
-        FavoriteEntity favorite = favoriteRepo.findByPropertyIdAndUserId(property.getFavorite().getId(), user.getId())
-                .orElseThrow(() -> new RuntimeException("Favorite not found"));
-            
-        favoriteRepo.delete(favorite);
+        favoriteRepo.findByProperty_IdAndUser_Id(propertyId, user.getId())
+                .ifPresent(favorite -> favoriteRepo.delete(favorite));
     }
 }

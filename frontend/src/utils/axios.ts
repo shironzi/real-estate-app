@@ -23,6 +23,7 @@ import axios, { AxiosError } from 'axios'
 // Create axios instance with the base url
 const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
+    withCredentials: true
 })
 
 /**
@@ -43,6 +44,14 @@ api.interceptors.request.use(
 
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        if (!config.headers['Content-Type']) {
+            if (config.data instanceof FormData) {
+                config.headers['Content-Type'] = "multipart/form-data";
+            } else {
+                config.headers['Content-Type'] = "application/json";
+            }
         }
 
         return config;
