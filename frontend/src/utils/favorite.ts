@@ -7,3 +7,11 @@ export const addFavorite = async (propertyId: string) => {
 
     return data;
 }
+
+export const removeFavorite = async (propertyId: string) => {
+    const { data } = await api.delete(`/favorite/${propertyId}`);
+
+    console.log(data)
+
+    return data;
+}

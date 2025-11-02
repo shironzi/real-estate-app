@@ -25,6 +25,8 @@ const PropertyView = () => {
 
         const res = await getPropertyById(id);
 
+        console.log(res);
+
         if (res.success) {
           setProperty(res.property);
         }

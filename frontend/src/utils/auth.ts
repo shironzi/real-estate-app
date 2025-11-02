@@ -69,6 +69,8 @@ export const logout = async () => {
 		const res = await api.post("/auth/logout");
 		localStorage.removeItem("token");
 
+		window.location.reload();
+
 		return res;
 	} catch (err: any) {
 		throw new Error(err.response.data.messages);
