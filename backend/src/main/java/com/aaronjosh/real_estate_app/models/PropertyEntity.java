@@ -11,10 +11,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "property")
+@ToString(exclude = { "favorites" })
 public class PropertyEntity {
     public enum PropertyType {
         APARTMENT,
@@ -87,7 +89,7 @@ public class PropertyEntity {
     @JoinColumn(name = "host_id")
     private UserEntity host;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FavoriteEntity> favorites = new ArrayList<>();
 
     public PropertyEntity() {

@@ -94,7 +94,7 @@ public class PropertyService {
     @Transactional(readOnly = true)
     public PropertyResDto getPropertyById(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Property not found"));
+                .orElseThrow(() -> new RuntimeException("Property not found"));
 
         return toDto(property);
     }

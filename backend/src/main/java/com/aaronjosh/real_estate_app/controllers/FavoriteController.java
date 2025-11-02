@@ -17,13 +17,13 @@ import com.aaronjosh.real_estate_app.services.FavoriteService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/favorite")
 public class FavoriteController {
 
     @Autowired
     private FavoriteService favoriteService;
 
-    @GetMapping("/favorite/{favoriteId}")
+    @GetMapping("/{favoriteId}")
     public ResponseEntity<?> getFavorite(@Valid @PathVariable UUID favoriteId) {
         Boolean favorite = favoriteService.getFavorite(favoriteId);
 
@@ -31,7 +31,7 @@ public class FavoriteController {
                 .ok(Map.of("success", true, "message", "successfully retrieve favorite", "favorite", favorite));
     }
 
-    @PostMapping("/favorite/{propertyId}")
+    @PostMapping("/{propertyId}")
     public ResponseEntity<?> addFavorite(@Valid @PathVariable UUID propertyId) {
         favoriteService.addFavorite(propertyId);
 
