@@ -65,3 +65,5 @@ frontend/yarn-error.log*
 ### OS Files ###
 Thumbs.db
 *.log
+
+TODO.md
