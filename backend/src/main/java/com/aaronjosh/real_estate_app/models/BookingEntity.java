@@ -1,7 +1,6 @@
 package com.aaronjosh.real_estate_app.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -13,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,6 +20,7 @@ import lombok.Data;
 @Table(name = "bookings")
 public class BookingEntity {
     public enum BookingStatus {
+        CANCELLED,
         PENDING,
         APPROVED,
         REJECTED,
@@ -37,8 +36,8 @@ public class BookingEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<ScheduleEntity> schedules = new ArrayList<>();
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTIme;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
