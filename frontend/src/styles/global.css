@@ -36,17 +36,6 @@ input:focus {
   box-shadow: none;
 }
 
-
-button {
-  background-color: #B08D57;
-  border: none;
-  border-radius: 2.5px;
-  max-width: 300px;
-  width: 100%;
-  padding: 5px;
-  cursor: pointer;
-}
-
 /* Colors */
 .black {
   color: #484848

@@ -23,6 +23,7 @@ p {
     background-color: transparent;
     z-index: 1000;
     pointer-events: auto;
+    border: none;
 }
 
 .home-properties {

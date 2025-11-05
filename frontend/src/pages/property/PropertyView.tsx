@@ -7,6 +7,7 @@ import {
 } from "@/pages/property/Propertytypes";
 
 import "@/styles/property/viewProperty.css";
+import PropertySlider from "@/components/property/PropertySlider";
 
 const PropertyView = () => {
   const { id } = useParams();
@@ -47,14 +48,18 @@ const PropertyView = () => {
     );
   }
 
+  /**
+   *
+   *
+   *  https://dribbble.com/shots/19781000-Property-Details
+   *
+   *
+   */
+
   return (
     <div>
       <h2>{property.title}</h2>
-      <div>
-        {property.image.map((image: string, index: number) => (
-          <img src={image} key={index} alt={`property-image-${image}`} />
-        ))}
-      </div>
+      <PropertySlider images={property.image} />
 
       <h3>
         {property.title}, {property.address}

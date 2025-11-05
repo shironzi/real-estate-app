@@ -87,7 +87,9 @@ const Login = () => {
         <Link to="/register" className="auth-redirect">
           <h4>Don't have an account?</h4>
         </Link>
-        <button type="submit">Login</button>
+        <button className="auth-button" type="submit">
+          Login
+        </button>
       </form>
     </div>
   );

@@ -68,6 +68,16 @@ h4 {
     font-style: italic;
 }
 
+.auth-button {
+  background-color: #B08D57;
+  border: none;
+  border-radius: 2.5px;
+  max-width: 300px;
+  width: 100%;
+  padding: 5px;
+  cursor: pointer;
+}
+
 .error {
     text-align: center;
     border: #e65100 2.5px solid;
