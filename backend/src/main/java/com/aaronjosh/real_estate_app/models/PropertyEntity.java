@@ -16,7 +16,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "property")
-@ToString(exclude = { "favorites" })
+@ToString(exclude = { "favorites", "bookings" })
 public class PropertyEntity {
     public enum PropertyType {
         APARTMENT,
