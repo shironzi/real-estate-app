@@ -37,7 +37,7 @@ public class BookingEntity {
     private UserEntity user;
 
     private LocalDateTime startDateTime;
-    private LocalDateTime endDateTIme;
+    private LocalDateTime endDateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

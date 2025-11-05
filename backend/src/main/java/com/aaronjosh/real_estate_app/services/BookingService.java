@@ -76,7 +76,7 @@ public class BookingService {
         booking.setUser(user);
 
         booking.setStartDateTime(bookingSchedule.getStart());
-        booking.setEndDateTIme(bookingSchedule.getEnd());
+        booking.setEndDateTime(bookingSchedule.getEnd());
 
         // applying the one to many relations
         bookingRepo.save(booking);
@@ -117,7 +117,7 @@ public class BookingService {
 
         // checks if there was conflict on schedules
         List<BookingEntity> existingBookings = bookingRepo.findOverlappingBookings(property.getId(),
-                booking.getEndDateTIme(), booking.getStartDateTime());
+                booking.getEndDateTime(), booking.getStartDateTime());
 
         if (!existingBookings.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "There was already a scheduled");
