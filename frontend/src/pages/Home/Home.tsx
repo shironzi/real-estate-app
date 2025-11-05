@@ -3,12 +3,21 @@ import { getProperties } from "@/utils/property";
 import { useEffect, useState } from "react";
 import { PropertyTypesView } from "@/pages/property/Propertytypes";
 import { addFavorite, removeFavorite } from "@/utils/favorite";
+import { useUserData } from "@/context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { userData } = useUserData();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [properties, setProperties] = useState<PropertyTypesView[]>([]);
 
   const handleFavorite = async (propertyId: string) => {
+    if (!userData.isAuthenticated) {
+      navigate("/login");
+    }
+
     const isFavorite = properties.find(
       (property) => property.id === propertyId
     )?.isFavorite;
