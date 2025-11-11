@@ -28,6 +28,7 @@ const PropertyView = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(generateEndDate);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
 
   const onBook = async () => {
     if (!id) {
@@ -35,9 +36,8 @@ const PropertyView = () => {
     }
     const res = await bookProperty(id, startDate, endDate);
 
-    if (res.success) {
-      setShowModal(true);
-    }
+    setModalMessage(res.message);
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const PropertyView = () => {
 
       {showModal && (
         <ToastNotif
-          message="hellokasdklajslaksd"
+          message={modalMessage}
           onClose={() => setShowModal(false)}
         />
       )}
