@@ -1,5 +1,5 @@
 import { getPropertyById } from "@/utils/property";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   PropertyTypesView,
@@ -8,16 +8,37 @@ import {
 
 import "@/styles/property/viewProperty.css";
 import PropertySlider from "@/components/property/PropertySlider";
-import { GoPeople } from "react-icons/go";
-import { LuBedSingle } from "react-icons/lu";
-import { MdOutlineBathroom, MdOutlineMeetingRoom } from "react-icons/md";
+import PropertyDetails from "@/components/property/PropertyDetails";
+import ScheduleProperty from "@/components/property/ScheduleProperty";
+import ToastNotif from "@/components/ToastNotif";
+import { bookProperty } from "@/utils/bookProperty";
 
 const PropertyView = () => {
+  const generateEndDate = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 2);
+    return date;
+  }, []);
+
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [property, setProperty] = useState<PropertyTypesView>(
     PropertyTypesViewDefaultData
   );
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(generateEndDate);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const onBook = async () => {
+    if (!id) {
+      return;
+    }
+    const res = await bookProperty(id, startDate, endDate);
+
+    if (res.success) {
+      setShowModal(true);
+    }
+  };
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -44,50 +65,30 @@ const PropertyView = () => {
 
   return (
     <div className="property-view-container">
-      <div className="property-view-grid">
-        {/* LEFT: Image Slider */}
-        <div className="property-slider-wrapper">
-          <PropertySlider images={property.image} />
-        </div>
-
-        {/* RIGHT: Details */}
-        <div className="property-details">
-          <h2 className="property-title">{property.title}</h2>
-          <p className="property-address">{property.address}</p>
-
-          <p className="property-description">{property.description}</p>
-
-          <ul className="view-amenities">
-            <li>
-              <GoPeople size={28} />
-              <span>
-                {property.maxGuest} {property.maxGuest > 1 ? "guests" : "guest"}
-              </span>
-            </li>
-            <li>
-              <MdOutlineMeetingRoom size={28} />
-              <span>
-                {property.totalBedroom}{" "}
-                {property.totalBedroom > 1 ? "bedrooms" : "bedroom"}
-              </span>
-            </li>
-            <li>
-              <LuBedSingle size={28} />
-              <span>
-                {property.totalBed} {property.totalBed > 1 ? "beds" : "bed"}
-              </span>
-            </li>
-            <li>
-              <MdOutlineBathroom size={28} />
-              <span>
-                {property.totalBath} {property.totalBath > 1 ? "baths" : "bath"}
-              </span>
-            </li>
-          </ul>
-
-          <button className="rent-btn">Rent this property</button>
-        </div>
+      <div className="property-slider-wrapper">
+        <PropertySlider images={property.image} />
       </div>
+      <div className="property-view-grid">
+        {/* Left: Details */}
+        <PropertyDetails property={property} />
+
+        {/* Right Details (date picker) */}
+        <ScheduleProperty
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          onBook={() => {}}
+          price={property.price}
+        />
+      </div>
+
+      {showModal && (
+        <ToastNotif
+          message="hellokasdklajslaksd"
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

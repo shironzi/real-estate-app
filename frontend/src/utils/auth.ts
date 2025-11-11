@@ -1,4 +1,3 @@
-import { useUserData } from "@/context/UserContext";
 import api from "./axios";
 
 /**
