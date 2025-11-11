@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <nav>
-      <Modal
+      {/* <Modal
         open={showModal}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
@@ -67,7 +67,7 @@ const Navbar = () => {
             {message}
           </Typography>
         </Box>
-      </Modal>
+      </Modal> */}
 
       {/* Logo */}
       <Link to={"/"} className="logo link">
