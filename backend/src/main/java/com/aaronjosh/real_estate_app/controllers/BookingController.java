@@ -53,6 +53,7 @@ public class BookingController {
         return ResponseEntity.ok(Map.of("success", true, "booking", booking));
     }
 
+    @PreAuthorize("RENTER")
     @PostMapping("/{bookingId}")
     public ResponseEntity<?> requestBooking(@Valid @PathVariable UUID bookingId, @RequestBody ScheduleReqDto schedule) {
         bookingService.requestBooking(bookingId, schedule);
