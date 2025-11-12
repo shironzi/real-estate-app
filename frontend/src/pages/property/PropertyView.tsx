@@ -78,7 +78,7 @@ const PropertyView = () => {
           endDate={endDate}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-          onBook={() => {}}
+          onBook={onBook}
           price={property.price}
         />
       </div>

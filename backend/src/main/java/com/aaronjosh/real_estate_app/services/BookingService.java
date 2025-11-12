@@ -15,6 +15,7 @@ import com.aaronjosh.real_estate_app.models.UserEntity;
 import com.aaronjosh.real_estate_app.models.BookingEntity.BookingStatus;
 import com.aaronjosh.real_estate_app.repositories.BookingRepo;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
+import com.aaronjosh.real_estate_app.util.DateTimeUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -69,16 +70,26 @@ public class BookingService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You already have a pending booking.");
         }
 
+        // checks if there was conflict on schedules
+        List<BookingEntity> existingBookings = bookingRepo.findOverlappingBookings(property.getId(),
+                bookingSchedule.getEnd(), bookingSchedule.getStart());
+
+        if (!existingBookings.isEmpty()) {
+            String startFormatted = DateTimeUtils.formatLongDateTime(bookingSchedule.getStart());
+            String endFormatted = DateTimeUtils.formatLongDateTime(bookingSchedule.getEnd());
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "The property is not available from " + startFormatted + " to " + endFormatted);
+        }
+
         // creating a booking entity
         BookingEntity booking = new BookingEntity();
         booking.setProperty(property);
         booking.setStatus(BookingStatus.PENDING);
         booking.setUser(user);
-
         booking.setStartDateTime(bookingSchedule.getStart());
         booking.setEndDateTime(bookingSchedule.getEnd());
-
-        // applying the one to many relations
         bookingRepo.save(booking);
     }
 
