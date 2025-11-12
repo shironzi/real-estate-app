@@ -1,6 +1,7 @@
 package com.aaronjosh.real_estate_app.dto.property;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,4 +26,6 @@ public class PropertyResDto {
     private PropertyStatus status;
     private List<String> image;
     private Boolean isFavorite;
+    private List<LocalDateTime> bookingStartDateTime;
+    private List<LocalDateTime> bookingEndDateTime;
 }

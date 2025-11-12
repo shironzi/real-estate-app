@@ -1,9 +1,7 @@
 package com.aaronjosh.real_estate_app.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +16,11 @@ import com.aaronjosh.real_estate_app.dto.property.UpdatePropertyDto;
 import com.aaronjosh.real_estate_app.models.PropertyImageEntity;
 import com.aaronjosh.real_estate_app.models.PropertyEntity;
 import com.aaronjosh.real_estate_app.models.UserEntity;
-import com.aaronjosh.real_estate_app.repositories.FavoriteRepository;
+import com.aaronjosh.real_estate_app.models.PropertyEntity.PropertyStatus;
 import com.aaronjosh.real_estate_app.repositories.PropertyRepository;
 import com.aaronjosh.real_estate_app.repositories.UserRepository;
+import com.aaronjosh.real_estate_app.util.PropertyMapper;
+import com.aaronjosh.real_estate_app.util.PropertyMapperWithSchedules;
 
 @Service
 @Transactional
@@ -36,67 +36,35 @@ public class PropertyService {
     private UserRepository userRepo;
 
     @Autowired
-    private FavoriteRepository favoriteRepo;
+    private PropertyMapper propertyMapper;
 
-    protected PropertyResDto toDto(PropertyEntity property) {
-        List<String> images = new ArrayList<>();
+    @Autowired
+    private PropertyMapperWithSchedules propertyMapperWithSchedules;
 
-        property.getImage().forEach(image -> {
-            images.add("http://localhost:8080/api/image/" + image.getId());
-        });
-
-        PropertyResDto dto = new PropertyResDto();
-
-        dto.setId(property.getId());
-        dto.setTitle(property.getTitle());
-        dto.setAddress(property.getAddress());
-        dto.setCity(property.getCity());
-        dto.setDescription(property.getDescription());
-        dto.setMaxGuest(property.getMaxGuest());
-        dto.setPrice(property.getPrice());
-        dto.setPropertyType(property.getPropertyType());
-        dto.setTotalBath(property.getTotalBath());
-        dto.setTotalBed(property.getTotalBed());
-        dto.setTotalBedroom(property.getTotalBedroom());
-        dto.setStatus(property.getStatus());
-        dto.setImage(images);
-
-        UserEntity user = userService.getUserEntity();
-        boolean isFavorite = false;
-
-        if (user != null) {
-            isFavorite = favoriteRepo
-                    .findByProperty_IdAndUser_Id(property.getId(), user.getId())
-                    .isPresent();
-        }
-
-        dto.setIsFavorite(isFavorite);
-
-        return dto;
-    }
-
+    // get all active properties
     @Transactional(readOnly = true)
     public List<PropertyResDto> getProperties() {
-        List<PropertyEntity> properties = propertyRepo.findAll();
+        List<PropertyEntity> properties = propertyRepo.findByStatus(PropertyStatus.ACTIVE);
 
-        return properties.stream().map(this::toDto).collect(Collectors.toList());
+        return propertyMapper.toDto(properties);
     }
 
+    // gets the owner properties
     @Transactional(readOnly = true)
     public List<PropertyResDto> getMyPropeties() {
         UserEntity user = userService.getUserEntity();
+        List<PropertyEntity> properties = propertyRepo.findByHostId(user.getId());
 
-        return propertyRepo.findByHostId(user.getId()).stream().map(this::toDto)
-                .collect(Collectors.toList());
-
+        return propertyMapper.toDto(properties);
     }
 
+    // get property by id
     @Transactional(readOnly = true)
     public PropertyResDto getPropertyById(UUID propertyId) {
         PropertyEntity property = propertyRepo.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
 
-        return toDto(property);
+        return propertyMapperWithSchedules.toDto(property);
     }
 
     public PropertyEntity addProperty(PropertyDto propertyDto) {
