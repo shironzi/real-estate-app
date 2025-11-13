@@ -47,12 +47,14 @@ public class PropertyMapper {
         // Get the current user details
         UserEntity user = userService.getUserEntity();
 
-        // Checks if the property is on user's favorites
-        boolean isFavorite = user.getFavorites().stream()
-                .anyMatch(fav -> fav.getProperty().getId().equals(property.getId()));
+        if (user != null) {
+            // Checks if the property is on user's favorites
+            boolean isFavorite = user.getFavorites().stream()
+                    .anyMatch(fav -> fav.getProperty().getId().equals(property.getId()));
 
-        // Sets the favorite status to dto
-        dto.setIsFavorite(isFavorite);
+            // Sets the favorite status to dto
+            dto.setIsFavorite(isFavorite);
+        }
 
         // returns the dto with the property details
         return dto;
