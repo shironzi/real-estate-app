@@ -67,16 +67,9 @@ const Home = () => {
         {properties?.map((property) => (
           <PropertyCard
             key={property.id}
-            propertyId={property.id}
-            title={property.title}
-            price={property.price}
-            totalNights={1}
-            image={property.image}
-            address={property.address}
-            status={property.status}
-            isFavorite={property.isFavorite}
-            isManageMode={false}
-            onFavorite={handleFavorite}
+            property={property}
+            actions={{ onFavorite: handleFavorite }}
+            settings={{ isManageMode: false }}
           />
         ))}
       </div>

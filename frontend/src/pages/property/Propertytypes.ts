@@ -1,3 +1,9 @@
+export type PropertyType =
+    | "APARTMENT"
+    | "HOUSE"
+    | "VILLA"
+    | "CABIN";
+
 export type PropertyTypesView = {
     id: string;
     title: string;
@@ -9,8 +15,9 @@ export type PropertyTypesView = {
     totalBedroom: number;
     totalBed: number;
     totalBath: number;
+    totalNights: number;
     city: string;
-    propertyType: "APARTMENT" | "HOUSE" | "VILLA" | "CABIN";
+    propertyType: PropertyType;
     image: string[];
     isFavorite: boolean;
 };
@@ -27,7 +34,18 @@ export const PropertyTypesViewDefaultData: PropertyTypesView = {
     totalBed: 0,
     totalBath: 0,
     city: "",
+    totalNights: 1,
     propertyType: "APARTMENT",
     image: [],
     isFavorite: false
 };
+
+export type PropertyCardActions = {
+    onDelete?: (propertyId: string) => void;
+    onEdit?: (propertyId: string) => void;
+    onFavorite?: (propertyId: string) => void;
+}
+
+export type PropertyCardSettings = {
+    isManageMode: boolean;
+}

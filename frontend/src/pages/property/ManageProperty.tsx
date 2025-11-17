@@ -78,15 +78,9 @@ const ManageProperty = () => {
         {properties.length > 0 ? (
           properties.map((property) => (
             <PropertyCard
-              propertyId={property.id}
-              title={property.title}
-              address={property.address}
-              price={property.price}
-              image={property.image}
-              status={property.status}
-              onDelete={(propertyId) => handleOnDelete(propertyId)}
-              onEdit={(propertyId) => handleOnEdit(propertyId)}
-              isManageMode={true}
+              property={property}
+              actions={{ onEdit: handleOnEdit, onDelete: handleOnDelete }}
+              settings={{ isManageMode: true }}
             />
           ))
         ) : (
