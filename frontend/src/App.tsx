@@ -16,6 +16,8 @@ import PropertyImage from "./pages/property/PropertyImage";
 import PropertyView from "./pages/property/PropertyView";
 import PropertyReview from "./pages/property/PropertyReview";
 import ManageProperty from "./pages/property/ManageProperty";
+import ManageBookings from "./pages/bookings/ManageBookings";
+import PageNotFound from "./PageNotFound";
 
 const ProtectedRoutes = () => {
   const token = localStorage.getItem("token");
@@ -32,7 +34,10 @@ function App() {
       <Navbar />
       <div className="container">
         <Routes>
+          {/* Home Page */}
           <Route path="/" element={<Home />} />
+
+          {/* Auth Page */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -42,7 +47,11 @@ function App() {
             <Route path="/property/image" element={<PropertyImage />} />
             <Route path="/property/review" element={<PropertyReview />} />
             <Route path="/property/manage" element={<ManageProperty />} />
-            <Route path="/property/edit/info/:id" element={<PropertyForm />} />
+            <Route path="/property/bookings" element={<ManageProperty />} />
+            <Route
+              path="/property/edit/info/:id"
+              element={<ManageBookings />}
+            />
             <Route
               path="/property/edit/image/:id"
               element={<PropertyImage />}
@@ -52,6 +61,9 @@ function App() {
               element={<PropertyReview />}
             />
             <Route path="/property/:id" element={<PropertyView />} />
+
+            {/* Page not found */}
+            <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
       </div>
