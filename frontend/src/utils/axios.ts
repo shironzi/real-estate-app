@@ -84,6 +84,8 @@ api.interceptors.response.use(
                 localStorage.removeItem("token");
                 window.location.href = "/login";
             };
+        } else if (error.response?.status === 404) {
+            window.location.href = "/404";
         } else if (error.response?.status >= 500) {
             console.error("Something went wrong. Please try again later.");
         }
