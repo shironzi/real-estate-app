@@ -18,6 +18,7 @@ import PropertyReview from "./pages/property/PropertyReview";
 import ManageProperty from "./pages/property/ManageProperty";
 import ManageBookings from "./pages/bookings/ManageBookings";
 import PageNotFound from "./PageNotFound";
+import Bookings from "./pages/bookings/Bookings";
 
 const ProtectedRoutes = () => {
   const token = localStorage.getItem("token");
@@ -47,7 +48,6 @@ function App() {
             <Route path="/property/image" element={<PropertyImage />} />
             <Route path="/property/review" element={<PropertyReview />} />
             <Route path="/property/manage" element={<ManageProperty />} />
-            <Route path="/property/bookings" element={<ManageProperty />} />
             <Route
               path="/property/edit/info/:id"
               element={<ManageBookings />}
@@ -61,6 +61,10 @@ function App() {
               element={<PropertyReview />}
             />
             <Route path="/property/:id" element={<PropertyView />} />
+
+            {/* Booking Routes */}
+            <Route path="/bookings" element={<ManageBookings />} />
+            <Route path="/booking/:id" element={<Bookings />} />
 
             {/* Page not found */}
             <Route path="*" element={<PageNotFound />} />

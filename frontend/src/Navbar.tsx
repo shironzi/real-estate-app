@@ -110,7 +110,7 @@ const Navbar = () => {
 
                 {userData.role === "OWNER" && (
                   <li>
-                    <Link to="/property/booking" className="link">
+                    <Link to="/bookings" className="link">
                       Property Bookings
                     </Link>
                   </li>
