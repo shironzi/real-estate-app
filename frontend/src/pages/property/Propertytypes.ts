@@ -47,5 +47,5 @@ export type PropertyCardActions = {
 }
 
 export type PropertyCardSettings = {
-    isManageMode: boolean;
+    mode: 'home' | 'manage' | 'booking';
 }

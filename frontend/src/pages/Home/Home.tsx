@@ -69,7 +69,7 @@ const Home = () => {
             key={property.id}
             property={property}
             actions={{ onFavorite: handleFavorite }}
-            settings={{ isManageMode: false }}
+            settings={{ mode: "home" }}
           />
         ))}
       </div>

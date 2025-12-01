@@ -31,7 +31,7 @@ const PropertyCardDetails = ({ property, actions, settings }: Props) => {
         </p>
       </div>
 
-      {settings.isManageMode && (
+      {settings.mode === "manage" && (
         <div className="property-actions">
           <button
             className="property-actions-buttons edit-btn"
@@ -47,6 +47,8 @@ const PropertyCardDetails = ({ property, actions, settings }: Props) => {
           </button>
         </div>
       )}
+
+      {settings.mode === "booking" && <div></div>}
     </div>
   );
 };

@@ -18,12 +18,20 @@ const PropertyCard = ({ property, actions, settings }: PropertyCardProps) => {
   return (
     <div className="property-card-container">
       {/* If manage mode → show editing details/actions */}
-      {settings.isManageMode ? (
+      {settings.mode === "manage" ? (
         <PropertyCardDetails
           property={property}
           actions={actions}
           settings={settings}
         />
+      ) : settings.mode === "booking" ? (
+        <Link to={`/booking/${property.id}`}>
+          <PropertyCardDetails
+            property={property}
+            actions={actions}
+            settings={settings}
+          />
+        </Link>
       ) : (
         <Link to={`/property/${property.id}`} className="property-link">
           {/* Favorite button */}

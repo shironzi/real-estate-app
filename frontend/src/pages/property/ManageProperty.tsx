@@ -80,12 +80,12 @@ const ManageProperty = () => {
             <PropertyCard
               property={property}
               actions={{ onEdit: handleOnEdit, onDelete: handleOnDelete }}
-              settings={{ isManageMode: true }}
+              settings={{ mode: "manage" }}
             />
           ))
         ) : (
           <div>
-            <h1>No properties</h1>
+            <h1>No property</h1>
           </div>
         )}
       </div>
