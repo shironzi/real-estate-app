@@ -5,6 +5,7 @@ import BookingCalendar from "../../components/booking/BookingCalendar";
 import BookingNavbar from "../../components/booking/BookingNavbar";
 import { useState } from "react";
 import { defaultTab, Tab } from "./BookingTypes";
+import BookingList from "@/components/booking/BookingList";
 
 const Bookings = () => {
   const [tab, setTab] = useState<Tab>(defaultTab);
@@ -18,6 +19,8 @@ const Bookings = () => {
           <BookingRequest />
         </div>
       )}
+
+      {tab.tab === "Bookings" && <BookingList />}
     </div>
   );
 };

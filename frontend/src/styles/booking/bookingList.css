@@ -1,0 +1,186 @@
+.BookingList-navbar {
+    display: flex;
+    gap: 15px;
+    margin: 18px 0 26px;
+    padding: 8px;
+    background: #f6f7f9;
+    border-radius: 14px;
+    width: fit-content;
+}
+
+.BookingList-navbar button {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: 0.20s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Hover effect */
+.BookingList-navbar button:hover {
+    background: #ececec;
+    border-color: #ccc;
+}
+
+/* Selected / Active Filter */
+.BookingList-navbar button.active {
+    background: #222;
+    color: #fff;
+    border-color: #222;
+    font-weight: 600;
+}
+
+/* For emoji color consistency on dark bg */
+.BookingList-navbar button.active span {
+    filter: brightness(1.6);
+}
+
+.bookingCard {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+    transition: 0.2s ease;
+    width: 50%;
+}
+
+.bookingCard:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+}
+
+/* --- CARD CONTENT LAYOUT --- */
+.bookingCard-info {
+    gap: 14px 20px;
+    margin-bottom: 18px;
+}
+
+.bookingCard-info div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 20px;
+}
+
+.bookingCard-info h5 {
+    margin: 2px 0;
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Top title section (Property name) */
+.bookingCard-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    grid-column: span 4;
+    margin-bottom: 4px;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.status-pending {
+    background: #fff4d6;
+    color: #c89c00;
+}
+
+.status-approved {
+    background: #d8f5d8;
+    color: #287d3c;
+}
+
+.status-declined {
+    background: #ffe0e0;
+    color: #c0392b;
+}
+
+/* Payment badge */
+.payment-pending {
+    background: #ffe9d6;
+    color: #d17a00;
+}
+
+/* Special request label */
+.special-request {
+    background: #f2f2ff;
+    color: #4b47c2;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: fit-content;
+}
+
+/* --- ACTION BUTTONS --- */
+.bookingCard-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-outline,
+.btn-success,
+.btn-danger {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Outline Button */
+.btn-outline {
+    background: #fff;
+    border: 1px solid #222;
+}
+.btn-outline:hover {
+    background: #222;
+    color: #fff;
+}
+
+/* Approve Button */
+.btn-success {
+    background: #2ecc71;
+    border: none;
+    color: #fff;
+}
+.btn-success:hover {
+    background: #27ae60;
+}
+
+/* Decline Button */
+.btn-danger {
+    background: #e74c3c;
+    border: none;
+    color: #fff;
+}
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bookingCard-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .bookingCard-info {
+        grid-template-columns: 1fr;
+    }
+}

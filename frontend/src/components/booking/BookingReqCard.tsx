@@ -8,6 +8,7 @@ const BookingReqCard = () => {
       <h5>Check-out:</h5>
       <h5>Status:</h5>
 
+      <button>View Details</button>
       <div>
         <button>Approve</button>
         <button>Decline</button>
