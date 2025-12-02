@@ -6,6 +6,7 @@ import BookingNavbar from "../../components/booking/BookingNavbar";
 import { useState } from "react";
 import { defaultTab, Tab } from "./BookingTypes";
 import BookingList from "@/components/booking/BookingList";
+import BookingDashboard from "@/components/booking/BookingDashboard";
 
 const Bookings = () => {
   const [tab, setTab] = useState<Tab>(defaultTab);
@@ -13,6 +14,8 @@ const Bookings = () => {
   return (
     <div className="booking-container">
       <BookingNavbar tab={tab} onChange={setTab} />
+      {tab.tab === "Dashboard" && <BookingDashboard />}
+
       {tab.tab === "Calendar" && (
         <div className="booking-calendar-container">
           <BookingCalendar />

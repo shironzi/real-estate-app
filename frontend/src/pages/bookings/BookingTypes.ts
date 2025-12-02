@@ -10,5 +10,5 @@ export type Tab = {
 }
 
 export const defaultTab: Tab = {
-    tab: "Calendar"
+    tab: "Dashboard"
 }
