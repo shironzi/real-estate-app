@@ -7,19 +7,19 @@ const BookingList = () => {
       <h2>Bookings</h2>
 
       <div className="BookingList-navbar">
-        <button className="active">
+        <button className="btn-white-outline">
           <span>🟦</span> All
         </button>
-        <button>
+        <button className="btn-white-outline">
           <span>🟨</span> Pending
         </button>
-        <button>
+        <button className="btn-white-outline">
           <span>🟩</span> Approved
         </button>
-        <button>
+        <button className="btn-white-outline">
           <span>🟥</span> Declined
         </button>
-        <button>
+        <button className="btn-white-outline">
           <span>⚪</span> Cancelled
         </button>
       </div>

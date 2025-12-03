@@ -7,6 +7,7 @@ import { useState } from "react";
 import { defaultTab, Tab } from "./BookingTypes";
 import BookingList from "@/components/booking/BookingList";
 import BookingDashboard from "@/components/booking/BookingDashboard";
+import BookingReviews from "@/components/booking/BookingReviews";
 
 const Bookings = () => {
   const [tab, setTab] = useState<Tab>(defaultTab);
@@ -24,6 +25,8 @@ const Bookings = () => {
       )}
 
       {tab.tab === "Bookings" && <BookingList />}
+
+      {tab.tab === "Reviews" && <BookingReviews />}
     </div>
   );
 };
